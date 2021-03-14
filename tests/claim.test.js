@@ -84,7 +84,7 @@ describe('claimToken', () => {
         {
           username: 'Mark',
           email: '',
-          claimedAt: '2022-09-02T15:00:00.000Z'
+          claimedAt: '2022-09-02T12:00:00.000Z'
         }
       ],
       createdAt: '2021-03-13T21:45:59.143Z',
