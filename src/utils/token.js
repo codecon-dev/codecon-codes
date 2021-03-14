@@ -65,7 +65,7 @@ export async function createDatabaseToken (token) {
       throw new Error(`Error on Token Creation: Token ${code} already exists`)
     }
     tokens.push(token)
-    saveFile('data/tokens.json', tokens)
+    saveFile(tokens, 'data/tokens.json')
     return tokens
   } catch (error) {
     console.log(error)

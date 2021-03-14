@@ -1,16 +1,16 @@
 import Discord from 'discord.js'
-import { getHelp, getAbout } from './commands'
+import { getHelp, getAbout, claimToken } from './commands'
 import { handleMessageError } from './utils/handleError'
-import { getCommand, setStartupConfig } from './utils/message'
+import { getCommand } from './utils/message'
 import config from './config'
 import dotenv from 'dotenv'
 dotenv.config()
-
-const { defaultConfig: { prefix } } = config
+const { prefix } = config
 
 const commandActions = {
   help: getHelp,
   about: getAbout,
+  claim: claimToken,
   time: (message) => message.reply(new Date().toString())
 }
 
@@ -18,8 +18,6 @@ const commandActions = {
  * Initialize this bot.
  */
 async function init () {
-  await setStartupConfig()
-
   const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
 
   client.on('ready', async function () {

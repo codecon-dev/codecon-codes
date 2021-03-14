@@ -1,3 +1,3 @@
-const defaultConfig = {
-    prefix: '.',
-  }
+export default {
+  prefix: '.'
+}

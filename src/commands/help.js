@@ -1,5 +1,7 @@
 import { getArgumentsAndOptions, getCommand } from '../utils/message'
 import commandsHelp from '../utils/helpMessages'
+import config from '../config'
+const { prefix } = config
 
 /**
  * Get fields with more help information.
