@@ -62,7 +62,7 @@ describe('claimToken', () => {
 
   it('updates a token after its claim', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
-    jest.spyOn(Date, 'now').mockReturnValue(new Date('2022-09-02T12:00:00'))
+    jest.spyOn(Date, 'now').mockReturnValue(new Date('2022-09-02T12:00:00Z'))
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
     await claimToken(userMessage)

@@ -17,14 +17,9 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup timezone
-      uses: zcong1993/setup-timezone@v1.1.1
-      with:
-        timezone: UTC
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
