@@ -1,0 +1,48 @@
+{
+  "name": "codecon-codes",
+  "version": "0.0.1",
+  "description": "A Discord Bot to manage CodeCon's Gamification",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build && node dist/index.js",
+    "build": "babel src -d dist",
+    "import": "npm run build && node dist/importers",
+    "lint": "eslint .",
+    "test": "jest tests/ --runInBand",
+    "clean": "rm package-lock.json && rm -rf node_modules"
+  },
+  "keywords": [
+    "codecon",
+    "discord",
+    "bot",
+    "gamification"
+  ],
+  "author": "Mark Kop",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.5",
+    "@babel/core": "^7.11.5",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/runtime": "^7.11.2",
+    "@types/jest": "^26.0.13",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.8.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-config-standard-jsdoc": "^9.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsdoc": "^30.3.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^26.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
