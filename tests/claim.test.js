@@ -1,5 +1,10 @@
 import { claimToken } from '../src/commands'
 import { mockMessage } from './testUtils'
+import { getDatabaseTokenByCode, saveTokens } from '../src/utils/token'
+
+jest.mock('../src/utils/token', () => ({
+  handleMessageError: jest.fn()
+}))
 
 describe('claimToken', () => {
   it('sends a success embed when claimed successfully', async () => {
@@ -18,7 +23,7 @@ describe('claimToken', () => {
           name: 'Código',
           value: 'CODECON21',
           inline: true
-        },
+        }
       ]
     })
   })
