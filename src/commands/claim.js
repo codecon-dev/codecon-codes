@@ -1,15 +1,22 @@
 import { mountCommandHelpEmbed } from './help'
 import { getArgumentsAndOptions } from '../utils/message'
-import { getDatabaseTokenByCode, saveTokens } from '../utils/token'
+import { getDatabaseTokenByCode, updateDatabaseToken } from '../utils/token'
+
+/**
+ * @typedef UserScore
+ * @property {number} acquired
+ * @property {number} total
+ */
 
 /**
  * Created the embed message with sublimations found list.
  *
  * @param {string} token
  * @param {string} username
+ * @param {UserScore} score
  * @returns {import('discord.js').MessageEmbed}
  */
-function mountClaimEmbed (token, username) {
+function mountClaimEmbed (token, username, score) {
   return {
     title: ':trophy: Código resgatado!',
     fields: [
@@ -22,6 +29,10 @@ function mountClaimEmbed (token, username) {
         name: 'Código',
         value: token,
         inline: true
+      },
+      {
+        name: 'Pontos',
+        value: `Obtidos: ${score.acquired}\nTotal: ${score.total}`
       }
     ]
   }
@@ -44,6 +55,19 @@ export async function claimToken (message) {
   if (!token) {
     return message.channel.send('Não encontrei nenhum token com esse código :(')
   }
+  const { claimedBy, remainingClaims, value, decreaseValue, minimumValue } = token
+
+  const timesClaimed = claimedBy.length
+  let scoreAcquired = value - (timesClaimed * decreaseValue)
+  if (scoreAcquired < minimumValue) {
+    scoreAcquired = minimumValue
+  }
+
+  const userCurrentScore = 0 // TO DO: Get user current score
+  const score = {
+    acquired: scoreAcquired,
+    total: userCurrentScore + scoreAcquired
+  }
 
   const date = new Date(Date.now())
   const dateString = date.toISOString()
@@ -53,9 +77,13 @@ export async function claimToken (message) {
     claimedAt: dateString
   }
 
-  token.remainingClaims = token.remainingClaims - 1
-  token.claimedBy.push(user)
+  const updatedToken = {
+    ...token,
+    remainingClaims: remainingClaims - 1,
+    claimedBy: claimedBy.concat(user)
+  }
 
-  const successClaimEmbed = mountClaimEmbed(code, user.username)
+  await updateDatabaseToken(updatedToken)
+  const successClaimEmbed = mountClaimEmbed(code, user.username, score)
   return message.channel.send({ embed: successClaimEmbed })
 }

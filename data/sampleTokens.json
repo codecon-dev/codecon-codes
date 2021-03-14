@@ -3,12 +3,13 @@
         "code": "CODECON21",
         "value": 20,
         "decreaseValue": 2,
+        "minimumValue": 10,
         "totalClaims": 21,
         "remainingClaims": 20,
         "createdBy": "markkop",
         "claimedBy": [
             {
-                "user": "gabrielnunes",
+                "username": "gabrielnunes",
                 "email": "gabriel@nunes.com",
                 "claimedAt": "2021-03-14T21:45:59.143Z"
             }
@@ -20,6 +21,7 @@
         "code": "MARKTOKEN",
         "value": 100,
         "decreaseValue": 0,
+        "minimumValue": 100,
         "totalClaims": 1,
         "remainingClaims": 1,
         "createdBy": "markkop",
