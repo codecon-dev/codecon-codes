@@ -10,6 +10,25 @@ import { Message } from 'discord.js'
  */
 
 /**
+ * Check if the date provided by the user is valid.
+ *
+ * @param {string} string - DD/MM/YY HH:MM.
+ * @returns {ValidationResult}
+ */
+function validateAnswerDate (string) {
+  const dateRegex = /^([1-9]|([012][0-9])|(3[01]))\/([0]{0,1}[1-9]|1[012])\/\d\d\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/
+  if (!dateRegex.test(string)) {
+    return {
+      valid: false,
+      message: 'A data não está no formato DD/MM/YY HH:MM'
+    }
+  }
+  return {
+    valid: true
+  }
+}
+
+/**
  * Check if the a given value is a number.
  *
  * @param {string} number
@@ -33,11 +52,11 @@ function validateNumber (number) {
  * @param { Message } message
  * @returns {object} Options.
  */
-async function askOptions (message) {
+async function askToken (message) {
   const negativeAnswers = ['não', 'nao', 'no', 'n']
   const isNegativeAnswer = answer => negativeAnswers.includes(answer.toLowerCase())
 
-  const askTokenCodeText = ':label: Opa, qual o código do token que você quer criar? (/[a-zA-Z0-9]+/)'
+  const askTokenCodeText = ':label: Opa, qual o código do token que você quer criar? (`/[a-zA-Z0-9]+/`)'
   const { content: code } = await askAndWait(askTokenCodeText, message)
   if (!code) return {}
 
@@ -97,17 +116,20 @@ async function askOptions (message) {
     }
   }
 
-  const askExpireDateText = ':date: Por fim, esse token terá data limite? Se sim, qual? (DD/MM/AA HH:MM)'
+  const askExpireDateText = ':date: Por fim, esse token terá data limite? Se sim, qual? (`DD/MM/AA HH:MM`)'
   const { content: expireDateAnswer } = await askAndWait(askExpireDateText, message)
   if (!expireDateAnswer) return {}
 
   let expireDate = ''
   if (!isNegativeAnswer(expireDateAnswer)) {
-    expireDate = Number(valueAnswer)
-    const tokenValueValidation = validateNumber(expireDate)
+    const tokenValueValidation = validateAnswerDate(expireDateAnswer)
     if (!tokenValueValidation.valid) {
       return message.channel.send(tokenValueValidation.message)
     }
+
+    const mmddyyDate = expireDateAnswer.replace(/(.*?)\/(.*?)\//, '$2/$1/')
+    const utcDate = new Date(mmddyyDate)
+    expireDate = utcDate
   }
 
   return {
@@ -128,10 +150,8 @@ async function askOptions (message) {
  */
 export async function createToken (message) {
   try {
-    const options = await askOptions(message)
-    if (!options.name) {
-      return
-    }
+    const token = await askToken(message)
+    return message.channel.send(JSON.stringify(token, '', 2))
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)

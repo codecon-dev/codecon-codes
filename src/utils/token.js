@@ -123,3 +123,28 @@ export function validateTokenCode (code) {
     valid: true
   }
 }
+
+/**
+ * Creates the Token message embed.
+ *
+ * @param {Token} token
+ * @returns {import('discord.js').MessageEmbed}
+ */
+export function mountTokenEmbed (token) {
+  return {
+    title: `:coin: ${token.code.toUpperCase()}`,
+    description: token.description,
+    fields: [
+      {
+        name: 'Pontos',
+        value: token.value,
+        inline: true
+      },
+      {
+        name: 'Redução por Resgate',
+        value: token.decreaseValue,
+        inline: true
+      }
+    ]
+  }
+}
