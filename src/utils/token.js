@@ -98,3 +98,28 @@ export async function updateDatabaseToken (token) {
     console.log(error)
   }
 }
+
+/**
+ * @typedef ValidationResult
+ * @property {boolean} valid
+ * @property {string} [message]
+ */
+
+/**
+ * Validates Token Code.
+ *
+ * @param {string} code
+ * @returns {ValidationResult}
+ */
+export function validateTokenCode (code) {
+  if (!/[a-zA-Z0-9]+/.test(code)) {
+    return {
+      valid: false,
+      message: 'Còdigo não bateu com a regex /[a-zA-Z0-9]+/'
+    }
+  }
+
+  return {
+    valid: true
+  }
+}
