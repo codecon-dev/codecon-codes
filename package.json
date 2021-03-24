@@ -4,12 +4,13 @@
   "description": "A Discord Bot to manage CodeCon's Gamification",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node dist/index.js",
+    "start": "npm run reset:tokens && npm run build && node dist/index.js",
     "build": "babel src -d dist",
     "import": "npm run build && node dist/importers",
     "lint": "eslint .",
     "test": "jest tests/ --runInBand",
-    "clean": "rm package-lock.json && rm -rf node_modules"
+    "clean": "rm package-lock.json && rm -rf node_modules",
+    "reset:tokens": "rm data/tokens.json && cp data/sampleTokens.json data/tokens.json"
   },
   "keywords": [
     "codecon",
