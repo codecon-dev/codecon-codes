@@ -55,7 +55,7 @@ export async function getDatabaseTokenByCode (code) {
  * Creates a new token.
  *
  * @param {Token} token
- * @returns {Token[]}
+ * @returns {boolean}
  */
 export async function createDatabaseToken (token) {
   try {
@@ -65,11 +65,16 @@ export async function createDatabaseToken (token) {
     if (existingToken) {
       throw new Error(`Error on Token Creation: Token ${code} already exists`)
     }
+
+    const date = new Date(Date.now())
+    const dateString = date.toISOString()
+    token.createdAt = dateString
     tokens.push(token)
     saveFile(tokens, 'data/tokens.json')
-    return tokens
+    return true
   } catch (error) {
     console.log(error)
+    return false
   }
 }
 

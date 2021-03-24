@@ -1,4 +1,4 @@
-import { validateTokenCode, mountTokenEmbed } from '../../utils/token'
+import { validateTokenCode, mountTokenEmbed, createDatabaseToken } from '../../utils/token'
 import { askAndWait } from '../../utils/message'
 import { handleMessageError } from '../../utils/handleError'
 import { Message } from 'discord.js'
@@ -129,7 +129,7 @@ async function askToken (message) {
 
     const mmddyyDate = expireDateAnswer.replace(/(.*?)\/(.*?)\//, '$2/$1/')
     const utcDate = new Date(mmddyyDate)
-    expireDate = utcDate
+    expireDate = utcDate.toISOString()
   }
 
   const token = {
@@ -138,6 +138,7 @@ async function askToken (message) {
     value,
     decreaseValue,
     totalClaims,
+    remainingClaims: totalClaims,
     expireAt: expireDate,
     createdBy: message.author.username
   }
@@ -168,6 +169,10 @@ export async function createToken (message) {
       return
     }
 
+    const success = await createDatabaseToken(token)
+    if (!success) {
+      message.channel.send('Não foi possível criar o token :c Olha o log')
+    }
     await message.channel.send('Token criado!')
     return
   } catch (error) {
