@@ -137,6 +137,7 @@ async function askToken (message) {
     description,
     value,
     decreaseValue,
+    minimumValue,
     totalClaims,
     remainingClaims: totalClaims,
     expireAt: expireDate,
