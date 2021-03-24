@@ -1,50 +1,7 @@
-import { validateTokenCode, mountTokenEmbed, createDatabaseToken } from '../../utils/token'
-import { askAndWait } from '../../utils/message'
+import { validateTokenCode, mountTokenEmbed, createDatabaseToken, validateAnswerDate, validateNumber } from '../../utils/token'
+import { askAndWait, isNegativeAnswer } from '../../utils/message'
 import { handleMessageError } from '../../utils/handleError'
 import { Message } from 'discord.js'
-
-/**
- * @typedef ValidationResult
- * @property {boolean} valid
- * @property {string} [message]
- */
-
-/**
- * Check if the date provided by the user is valid.
- *
- * @param {string} string - DD/MM/YY HH:MM.
- * @returns {ValidationResult}
- */
-function validateAnswerDate (string) {
-  const dateRegex = /^([1-9]|([012][0-9])|(3[01]))\/([0]{0,1}[1-9]|1[012])\/\d\d\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/
-  if (!dateRegex.test(string)) {
-    return {
-      valid: false,
-      message: 'A data não está no formato DD/MM/YY HH:MM'
-    }
-  }
-  return {
-    valid: true
-  }
-}
-
-/**
- * Check if the a given value is a number.
- *
- * @param {string} number
- * @returns {ValidationResult}
- */
-function validateNumber (number) {
-  if (Number.isNaN(number) && typeof number === 'number') {
-    return {
-      valid: false,
-      message: 'O valor informado não é um número =/'
-    }
-  }
-  return {
-    valid: true
-  }
-}
 
 /**
  * Get options by user input.
@@ -53,9 +10,6 @@ function validateNumber (number) {
  * @returns {object} Options.
  */
 async function askToken (message) {
-  const negativeAnswers = ['não', 'nao', 'no', 'n']
-  const isNegativeAnswer = answer => negativeAnswers.includes(answer.toLowerCase())
-
   const askTokenCodeText = ':label: Opa, qual o código do token que você quer criar? (`/[a-zA-Z0-9]+/`)'
   const { content: code } = await askAndWait(askTokenCodeText, message)
   if (!code) return {}

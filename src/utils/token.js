@@ -1,4 +1,5 @@
 import { openFile, saveFile } from './files'
+import { truncateFieldValue } from './message'
 
 /**
  * @typedef UserClaim
@@ -82,7 +83,7 @@ export async function createDatabaseToken (token) {
  * Update a token.
  *
  * @param {Token} token
- * @returns {Token}
+ * @returns {boolean}
  */
 export async function updateDatabaseToken (token) {
   try {
@@ -99,9 +100,10 @@ export async function updateDatabaseToken (token) {
     const existingTokenIndex = tokens.indexOf(existingToken)
     tokens[existingTokenIndex] = updatedToken
     saveFile(tokens, 'data/tokens.json')
-    return updatedToken
+    return true
   } catch (error) {
     console.log(error)
+    return false
   }
 }
 
@@ -125,6 +127,49 @@ export function validateTokenCode (code) {
     }
   }
 
+  return {
+    valid: true
+  }
+}
+
+/**
+ * @typedef ValidationResult
+ * @property {boolean} valid
+ * @property {string} [message]
+ */
+
+/**
+ * Check if the date provided by the user is valid.
+ *
+ * @param {string} string - DD/MM/YY HH:MM.
+ * @returns {ValidationResult}
+ */
+export function validateAnswerDate (string) {
+  const dateRegex = /^([1-9]|([012][0-9])|(3[01]))\/([0]{0,1}[1-9]|1[012])\/\d\d\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/
+  if (!dateRegex.test(string)) {
+    return {
+      valid: false,
+      message: 'A data não está no formato DD/MM/YY HH:MM'
+    }
+  }
+  return {
+    valid: true
+  }
+}
+
+/**
+ * Check if the a given value is a number.
+ *
+ * @param {string} number
+ * @returns {ValidationResult}
+ */
+export function validateNumber (number) {
+  if (Number.isNaN(number) && typeof number === 'number') {
+    return {
+      valid: false,
+      message: 'O valor informado não é um número =/'
+    }
+  }
   return {
     valid: true
   }
@@ -172,7 +217,7 @@ export function mountTokenEmbed (token) {
       },
       {
         name: 'Usuários que resgataram',
-        value: claimedByText
+        value: truncateFieldValue(claimedByText)
       },
       {
         name: 'Expira em',

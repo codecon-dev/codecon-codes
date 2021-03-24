@@ -1,13 +1,15 @@
 import { createToken } from './create'
 import { getToken } from './get'
 import { listTokens } from './list'
+import { updateToken } from './update'
 import { mountCommandHelpEmbed } from '../help'
 import { getArgumentsAndOptions } from '../../utils/message'
 
 const tokenActions = {
   create: createToken,
   get: getToken,
-  list: listTokens
+  list: listTokens,
+  update: updateToken
 }
 
 /**
