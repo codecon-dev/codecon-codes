@@ -8,7 +8,7 @@ import { Message } from 'discord.js'
  * Get a token from the database to check its data.
  *
  * @param {Message} message
- * @returns {undefined}
+ * @returns {Promise<Message>}
  */
 export async function getToken (message) {
   try {
@@ -19,13 +19,13 @@ export async function getToken (message) {
       return message.channel.send({ embed: helpEmbed })
     }
     const token = await getDatabaseTokenByCode(code)
+
     if (!token) {
       return message.channel.send('Não encontrei nenhum token com esse código :(')
     }
 
     const tokenEmbed = mountTokenEmbed(token)
-    await message.channel.send({ embed: tokenEmbed })
-    return
+    return message.channel.send({ embed: tokenEmbed })
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)

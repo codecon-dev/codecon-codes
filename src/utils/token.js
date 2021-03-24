@@ -221,7 +221,7 @@ export function mountTokenEmbed (token) {
       },
       {
         name: 'Expira em',
-        value: expireAtText
+        value: expireAtText.toISOString()
       }
     ],
     footer: {
