@@ -13,6 +13,7 @@ import { openFile, saveFile } from './files'
  * @property {string} description
  * @property {number} value
  * @property {number} decreaseValue
+ * @property {number} minimumValue
  * @property {number} totalClaims
  * @property {number} remainingClaims
  * @property {UserClaim[]} claimedBy
@@ -131,6 +132,8 @@ export function validateTokenCode (code) {
  * @returns {import('discord.js').MessageEmbed}
  */
 export function mountTokenEmbed (token) {
+  const claimedBy = token.claimedBy || []
+  const claimedByText = claimedBy.map(user => user.username).join(',') || 'Ninguém'
   return {
     title: `:coin: ${token.code.toUpperCase()}`,
     description: token.description,
@@ -142,8 +145,41 @@ export function mountTokenEmbed (token) {
       },
       {
         name: 'Redução por Resgate',
-        value: token.decreaseValue,
+        value: token.decreaseValue || 0,
         inline: true
+      },
+      {
+        name: 'Pontos mínimos',
+        value: token.minimumValue || token.value,
+        inline: true
+      },
+      {
+        name: 'Resgates máximos',
+        value: token.totalClaims,
+        inline: true
+      },
+      {
+        name: 'Resgates restantes',
+        value: token.remainingClaims || token.totalClaims,
+        inline: true
+      },
+      {
+        name: 'Usuários que resgataram',
+        value: claimedByText
+      },
+      {
+        name: 'Criado em',
+        value: token.createdAt || 'Ainda não foi criado',
+        inline: true
+      },
+      {
+        name: 'Criado por',
+        value: token.createdBy,
+        inline: true
+      },
+      {
+        name: 'Expira em',
+        value: token.expireAt || 'Não expira'
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { validateTokenCode } from '../../utils/token'
+import { validateTokenCode, mountTokenEmbed } from '../../utils/token'
 import { askAndWait } from '../../utils/message'
 import { handleMessageError } from '../../utils/handleError'
 import { Message } from 'discord.js'
@@ -132,26 +132,44 @@ async function askToken (message) {
     expireDate = utcDate
   }
 
-  return {
+  const token = {
     code,
     description,
     value,
     decreaseValue,
     totalClaims,
-    expireAt: expireDate
+    expireAt: expireDate,
+    createdBy: message.author.username
   }
+
+  const tokenEmbed = mountTokenEmbed(token)
+  const tokenCreateConfirmationMessage = 'Saca só como ficou. Confirma a criação desse token?'
+  message.channel.send({ embed: tokenEmbed })
+  const { content: tokenCreateConfirmation } = await askAndWait(tokenCreateConfirmationMessage, message)
+
+  if (!isNegativeAnswer(tokenCreateConfirmation)) {
+    return token
+  }
+
+  message.channel.send('Vish, beleza. Quando quiser tentar de novo é só mandar o mesmo comando.')
+  return {}
 }
 
 /**
  * Create a party message on the parties channel.
  *
- * @param {object} message
- * @returns {object}
+ * @param {Message} message
+ * @returns {undefined}
  */
 export async function createToken (message) {
   try {
     const token = await askToken(message)
-    return message.channel.send(JSON.stringify(token, '', 2))
+    if (!token || !token.code) {
+      return
+    }
+
+    await message.channel.send('Token criado!')
+    return
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)
