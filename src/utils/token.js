@@ -137,8 +137,10 @@ export function validateTokenCode (code) {
  * @returns {import('discord.js').MessageEmbed}
  */
 export function mountTokenEmbed (token) {
-  const claimedBy = token.claimedBy || []
-  const claimedByText = claimedBy.map(user => user.username).join(',') || 'Ninguém'
+  const { claimedBy, createdAt, expireAt } = token
+  const claimedByText = (claimedBy || []).map(user => user.username).join(',') || 'Ninguém'
+  const createdAtText = createdAt ? new Date(createdAt) : 'Ainda não foi criado'
+  const expireAtText = expireAt ? new Date(expireAt) : 'Não expira'
   return {
     title: `:coin: ${token.code.toUpperCase()}`,
     description: token.description,
@@ -173,19 +175,12 @@ export function mountTokenEmbed (token) {
         value: claimedByText
       },
       {
-        name: 'Criado em',
-        value: token.createdAt || 'Ainda não foi criado',
-        inline: true
-      },
-      {
-        name: 'Criado por',
-        value: token.createdBy,
-        inline: true
-      },
-      {
         name: 'Expira em',
-        value: token.expireAt || 'Não expira'
+        value: expireAtText
       }
-    ]
+    ],
+    footer: {
+      text: `Criado em ${createdAtText.toLocaleString()} (GMT-0300) por ${token.createdBy}`
+    }
   }
 }

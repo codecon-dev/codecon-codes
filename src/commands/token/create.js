@@ -116,7 +116,7 @@ async function askToken (message) {
     }
   }
 
-  const askExpireDateText = ':date: Por fim, esse token terá data limite? Se sim, qual? (`DD/MM/AA HH:MM`)'
+  const askExpireDateText = ':date: Por fim, esse token terá data limite? Se sim, qual? (`DD/MM/AA HH:MM` em GMT -3)'
   const { content: expireDateAnswer } = await askAndWait(askExpireDateText, message)
   if (!expireDateAnswer) return {}
 
@@ -140,6 +140,7 @@ async function askToken (message) {
     minimumValue,
     totalClaims,
     remainingClaims: totalClaims,
+    claimedBy: [],
     expireAt: expireDate,
     createdBy: message.author.username
   }
