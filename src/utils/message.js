@@ -124,3 +124,14 @@ export function convertToCodeBlock (text, codeBlockCharactersLength) {
   whiteSpacesCharacters.splice(0, textCharacters.length, ...textCharacters)
   return `\`${whiteSpacesCharacters.join('')}\``
 }
+
+const negativeAnswers = ['não', 'nao', 'no', 'n']
+/**
+ * Check if the answer text contains a negative word.
+ *
+ * @param {string} answer
+ * @returns {boolean}
+ */
+export function isNegativeAnswer (answer) {
+  return negativeAnswers.includes(answer.toLowerCase())
+}

@@ -50,3 +50,17 @@ export function mockMessage (content, channelMessages = []) {
     }
   }
 }
+
+/**
+ * Mock the answers that the user provides to askAndWait function.
+ *
+ * @param {Function} askAndWaitFunction
+ * @param {string[] }answers
+ */
+export function mockUserAnswers (askAndWaitFunction, answers) {
+  answers.forEach(answer => {
+    askAndWaitFunction.mockResolvedValueOnce({
+      content: answer
+    })
+  })
+}
