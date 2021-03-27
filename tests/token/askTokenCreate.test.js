@@ -52,7 +52,7 @@ describe('askToken', () => {
       '100',
       'não',
       'não',
-      '10/10/21 21:21',
+      'não',
       'sim'
     ]
     mockUserAnswers(askAndWait, answers)
@@ -68,7 +68,7 @@ describe('askToken', () => {
       totalClaims: Infinity,
       remainingClaims: Infinity,
       claimedBy: [],
-      expireAt: '2021-10-11T00:21:00.000Z',
+      expireAt: '',
       createdBy: 'Mark'
     })
   })

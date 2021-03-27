@@ -185,7 +185,8 @@ export function mountTokenEmbed (token) {
   const { claimedBy, createdAt, expireAt } = token
   const claimedByText = (claimedBy || []).map(user => user.username).join(', ') || 'Ninguém'
   const createdAtText = createdAt ? new Date(createdAt) : 'Ainda não foi criado'
-  const expireAtText = expireAt ? new Date(expireAt) : 'Não expira'
+  const expirtAtDate = new Date(expireAt)
+  const expireAtText = expireAt ? expirtAtDate.toISOString() : 'Não expira'
   return {
     title: `:coin: ${token.code.toUpperCase()}`,
     description: token.description,
@@ -221,7 +222,7 @@ export function mountTokenEmbed (token) {
       },
       {
         name: 'Expira em',
-        value: expireAtText.toISOString()
+        value: expireAtText
       }
     ],
     footer: {
