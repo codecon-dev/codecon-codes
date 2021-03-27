@@ -6,8 +6,6 @@ name: Build - Test - Deploy
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -19,6 +17,10 @@ jobs:
         node-version: [12.x]
 
     steps:
+    - name: Setup timezone
+      uses: zcong1993/setup-timezone@master
+      with:
+        timezone: America/Sao_Paulo
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
