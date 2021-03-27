@@ -60,7 +60,7 @@ export async function getDatabaseTokenByCode (code) {
  */
 export async function createDatabaseToken (token) {
   try {
-    const { code } = token
+    const { code, totalClaims, remainingClaims } = token
     const tokens = openFile('data/tokens.json')
     const existingToken = tokens.find(token => token.code === code)
     if (existingToken) {
@@ -70,6 +70,10 @@ export async function createDatabaseToken (token) {
     const date = new Date(Date.now())
     const dateString = date.toISOString()
     token.createdAt = dateString
+
+    token.totalClaims = totalClaims === Infinity ? 'Infinity' : totalClaims
+    token.remainingClaims = remainingClaims === Infinity ? 'Infinity' : remainingClaims
+
     tokens.push(token)
     saveFile(tokens, 'data/tokens.json')
     return true

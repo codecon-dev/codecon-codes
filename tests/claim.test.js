@@ -66,15 +66,10 @@ describe('claimToken', () => {
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
     await claimToken(userMessage)
-    const expectedToken = {
-      code: 'CODECON21',
-      description: 'Primeiro código da CodeCon 2021!',
-      value: 20,
-      decreaseValue: 2,
-      minimumValaue: 10,
-      totalClaims: 21,
+
+    expect(updateDatabaseToken).toHaveBeenCalledTimes(1)
+    expect(updateDatabaseToken).toHaveBeenCalledWith(expect.objectContaining({
       remainingClaims: 19,
-      createdBy: 'markkop',
       claimedBy: [
         {
           username: 'gabrielnunes',
@@ -86,11 +81,25 @@ describe('claimToken', () => {
           email: '',
           claimedAt: '2022-09-02T12:00:00.000Z'
         }
-      ],
-      createdAt: '2021-03-13T21:45:59.143Z',
-      expireAt: '2021-04-24T23:00:00.000Z'
+      ]
+    }))
+  })
+
+  it('updates a token with infinite uses after its claim', async () => {
+    const infinityToken = {
+      ...mockedToken,
+      totalClaims: Infinity,
+      remainingClaims: Infinity
     }
+    getDatabaseTokenByCode.mockResolvedValueOnce(infinityToken)
+    jest.spyOn(Date, 'now').mockReturnValue(new Date('2022-09-02T12:00:00Z'))
+    const content = '.claim CODECON21'
+    const userMessage = mockMessage(content)
+    await claimToken(userMessage)
+
     expect(updateDatabaseToken).toHaveBeenCalledTimes(1)
-    expect(updateDatabaseToken).toHaveBeenCalledWith(expectedToken)
+    expect(updateDatabaseToken).toHaveBeenCalledWith(expect.objectContaining({
+      remainingClaims: Infinity
+    }))
   })
 })
