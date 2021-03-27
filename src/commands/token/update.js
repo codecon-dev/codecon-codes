@@ -18,10 +18,9 @@ export async function updateToken (message) {
 
     const success = await updateDatabaseToken(token)
     if (!success) {
-      message.channel.send('Não foi possível atualizar o token :c Olha o log')
+      return message.channel.send('Não foi possível atualizar o token :c Olha o log')
     }
-    await message.channel.send('Token atualizado!')
-    return
+    return message.channel.send('Token atualizado!')
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)

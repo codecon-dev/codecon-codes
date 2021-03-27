@@ -63,7 +63,7 @@ export async function askToken (message) {
 
   let totalClaims = Infinity
   if (!isNegativeAnswer(totalClaimsAnswer)) {
-    totalClaims = Number(valueAnswer)
+    totalClaims = Number(totalClaimsAnswer)
     const tokenValueValidation = validateNumber(totalClaims)
     if (!tokenValueValidation.valid) {
       return message.channel.send(tokenValueValidation.message)
@@ -107,6 +107,5 @@ export async function askToken (message) {
     return token
   }
 
-  message.channel.send('Vish, beleza. Quando quiser tentar de novo é só mandar o mesmo comando.')
-  return {}
+  return message.channel.send('Vish, beleza. Quando quiser tentar de novo é só mandar o mesmo comando.')
 }

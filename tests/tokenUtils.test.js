@@ -12,4 +12,10 @@ describe('validateTokenCode', () => {
     const validation = validateTokenCode(code)
     expect(validation.valid).toBe(false)
   })
+
+  it('fails with whitespace characters', () => {
+    const code = 'TRO LEI'
+    const validation = validateTokenCode(code)
+    expect(validation.valid).toBe(false)
+  })
 })

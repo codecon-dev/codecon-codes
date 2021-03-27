@@ -135,6 +135,5 @@ export async function askTokenUpdate (message) {
     return token
   }
 
-  message.channel.send('Vish, beleza. Quando quiser tentar de novo é só mandar o mesmo comando.')
-  return {}
+  return message.channel.send('Vish, beleza. Quando quiser tentar de novo é só mandar o mesmo comando.')
 }

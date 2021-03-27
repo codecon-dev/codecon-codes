@@ -62,8 +62,7 @@ export async function listTokens (message) {
 
     const tokensCodes = tokens.map(token => token.code.toUpperCase()).sort()
     const tokenListEmbed = mountTokenListEmbed(tokensCodes)
-    await message.channel.send({ embed: tokenListEmbed })
-    return
+    return message.channel.send({ embed: tokenListEmbed })
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)
