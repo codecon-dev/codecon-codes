@@ -1,4 +1,4 @@
-import { openFile, saveFile } from './files'
+import { createOrUpdateToken, getTokenFromMongo, getTokensFromMongo } from './mongoose'
 import { truncateFieldValue } from './message'
 
 /**
@@ -30,7 +30,7 @@ import { truncateFieldValue } from './message'
  */
 export async function getDatabaseTokens () {
   try {
-    const tokens = openFile('data/tokens.json')
+    const tokens = await getTokensFromMongo()
     return tokens
   } catch (error) {
     console.log(error)
@@ -41,12 +41,12 @@ export async function getDatabaseTokens () {
  * Get a token from database by its code.
  *
  * @param {Token}code
- * @returns {Token}
+ * @returns {Promise<Token>}
  */
 export async function getDatabaseTokenByCode (code) {
   try {
-    const tokens = openFile('data/tokens.json')
-    return tokens.find(token => token.code === code)
+    const token = await getTokenFromMongo(code)
+    return token
   } catch (error) {
     console.log(error)
   }
@@ -56,13 +56,13 @@ export async function getDatabaseTokenByCode (code) {
  * Creates a new token.
  *
  * @param {Token} token
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
 export async function createDatabaseToken (token) {
   try {
-    const { code, totalClaims, remainingClaims } = token
-    const tokens = openFile('data/tokens.json')
-    const existingToken = tokens.find(token => token.code === code)
+    const { code } = token
+
+    const existingToken = await getTokenFromMongo(code)
     if (existingToken) {
       throw new Error(`Error on Token Creation: Token ${code} already exists`)
     }
@@ -71,12 +71,8 @@ export async function createDatabaseToken (token) {
     const dateString = date.toISOString()
     token.createdAt = dateString
 
-    token.totalClaims = totalClaims === Infinity ? 'Infinity' : totalClaims
-    token.remainingClaims = remainingClaims === Infinity ? 'Infinity' : remainingClaims
-
-    tokens.push(token)
-    saveFile(tokens, 'data/tokens.json')
-    return true
+    const createToken = await createOrUpdateToken(code, token)
+    return createToken
   } catch (error) {
     console.log(error)
     return false
@@ -87,24 +83,17 @@ export async function createDatabaseToken (token) {
  * Update a token.
  *
  * @param {Token} token
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
 export async function updateDatabaseToken (token) {
   try {
     const { code } = token
-    const tokens = openFile('data/tokens.json')
-    const existingToken = tokens.find(token => token.code === code)
-    if (!existingToken) {
+
+    const updatedToken = await createOrUpdateToken(code, token)
+    if (!updatedToken) {
       throw new Error(`Error on Token Update: Token ${code} was not found`)
     }
-    const updatedToken = {
-      ...existingToken,
-      ...token
-    }
-    const existingTokenIndex = tokens.indexOf(existingToken)
-    tokens[existingTokenIndex] = updatedToken
-    saveFile(tokens, 'data/tokens.json')
-    return true
+    return updatedToken
   } catch (error) {
     console.log(error)
     return false

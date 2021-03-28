@@ -56,7 +56,7 @@ function mountTokenListEmbed (tokensCodes) {
 export async function listTokens (message) {
   try {
     const tokens = await getDatabaseTokens()
-    if (!tokens.length) {
+    if (!tokens || !tokens.length) {
       return message.channel.send('Vish, nenhum token encontrado. Tá tudo certo com a base? :eyes:')
     }
 

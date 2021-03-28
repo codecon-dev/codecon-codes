@@ -1,15 +1,15 @@
-import { validateTokenCode, mountTokenEmbed, validateAnswerDate, validateNumber, getDatabaseTokenByCode } from '../../utils/token'
+import { mountTokenEmbed, validateAnswerDate, validateNumber, getDatabaseTokenByCode, Token } from '../../utils/token'
 import { askAndWait, isNegativeAnswer } from '../../utils/message'
 import { Message } from 'discord.js'
 
 /**
- * Get options by user input.
+ * Get token update by user input.
  *
  * @param { Message } message
- * @returns {object} Options.
+ * @returns {Token|Message}
  */
 export async function askTokenUpdate (message) {
-  const editOptions = ['code', 'description', 'value', 'decreaseValue', 'minimumValue', 'totalClaims', 'expireAt']
+  const editOptions = ['description', 'value', 'decreaseValue', 'minimumValue', 'totalClaims', 'expireAt']
 
   const askTokenCodeText = ':label: E aí, qual o token que você quer atualizar?'
   const { content: code } = await askAndWait(askTokenCodeText, message)
@@ -31,19 +31,6 @@ export async function askTokenUpdate (message) {
   if (!isValidOption) {
     const invalidOptionMessage = 'Foi mal, não entendi. Tem certeza que tentou uma opção válida?'
     return message.channel.send(invalidOptionMessage)
-  }
-
-  if (editOption === 'code') {
-    const askTokenCodeText = ':label: Qual será o novo código? (`/[a-zA-Z0-9]+/`)'
-    const { content: code } = await askAndWait(askTokenCodeText, message)
-    if (!code) return {}
-
-    const tokenCodeValidation = validateTokenCode(code)
-    if (!tokenCodeValidation.valid) {
-      return message.channel.send(tokenCodeValidation.message)
-    }
-
-    token.code = code
   }
 
   if (editOption === 'description') {

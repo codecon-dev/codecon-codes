@@ -71,38 +71,6 @@ describe('askTokenUpdate', () => {
     expect(token).toEqual('Foi mal, não entendi. Tem certeza que tentou uma opção válida?')
   })
 
-  it('updates a token code', async () => {
-    getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
-    const answers = [
-      'CODECON21',
-      'code',
-      'CODECON22',
-      'sim'
-    ]
-    mockUserAnswers(askAndWait, answers)
-
-    const userMessage = mockMessage('')
-    const token = await askTokenUpdate(userMessage)
-    expect(token).toEqual({
-      ...mockedToken,
-      code: 'CODECON22'
-    })
-  })
-
-  it('returns an error if trying to update a token with invalid code', async () => {
-    getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
-    const answers = [
-      'CODECON21',
-      'code',
-      'CODE CON22'
-    ]
-    mockUserAnswers(askAndWait, answers)
-
-    const userMessage = mockMessage('')
-    const token = await askTokenUpdate(userMessage)
-    expect(token).toEqual('Còdigo não bateu com a regex /[a-zA-Z0-9]+/')
-  })
-
   it('updates a token description', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
     const answers = [
@@ -285,8 +253,8 @@ describe('askTokenUpdate', () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
     const answers = [
       'CODECON21',
-      'code',
-      'CODECON22',
+      'description',
+      'new desc',
       'não'
     ]
     mockUserAnswers(askAndWait, answers)

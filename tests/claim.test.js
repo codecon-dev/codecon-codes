@@ -34,6 +34,7 @@ describe('claimToken', () => {
 
   it('sends a success embed when claimed successfully', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
+    updateDatabaseToken.mockResolvedValueOnce(true)
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
     const botMessage = await claimToken(userMessage)
