@@ -1,7 +1,9 @@
 /* istanbul ignore file */
 import mongoose from 'mongoose'
 import TokenModel from '../models/token'
+import UserModel from '../models/user'
 import { Token } from './token'
+import { User } from './user'
 
 /**
  * Connects mongoose to remote MongoDB.
@@ -94,6 +96,70 @@ export async function getTokensFromMongo () {
     const allTokens = await TokenModel.find({})
     await disconnectMongoose()
     return allTokens
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+/**
+ * Update or create a user.
+ *
+ * @param {string} userId
+ * @param {User} userContent
+ * @returns {Promise<UserModel>}
+ */
+export async function createOrUpdateUser (userId, userContent) {
+  try {
+    await connectMongoose()
+    const user = await UserModel.findOneAndUpdate({ userId: userId }, userContent, {
+      new: true,
+      upsert: true
+    })
+    await user.save()
+    await disconnectMongoose()
+    return user
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+/**
+ * Get a user from DB.
+ *
+ * @param {string} userId
+ * @returns {Promise<UserModel|null>}
+ */
+export async function getUserFromMongo (userId) {
+  try {
+    await connectMongoose()
+    const [user] = await UserModel.find({ userId: userId }).lean()
+    if (!user) {
+      return null
+    }
+    delete user._id
+    delete user.__v
+    delete user.id
+    await disconnectMongoose()
+    return user
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+/**
+ * Get a user from DB.
+ *
+ * @returns {Promise<UserModel[]>}
+ */
+export async function getUsersFromMongo () {
+  try {
+    await connectMongoose()
+    const users = await UserModel.find({})
+    if (!users) {
+      return []
+    }
+    await disconnectMongoose()
+    return users
   } catch (error) {
     console.log(error)
   }

@@ -1,6 +1,7 @@
 import { mountCommandHelpEmbed } from './help'
 import { getArgumentsAndOptions } from '../utils/message'
 import { getDatabaseTokenByCode, updateDatabaseToken } from '../utils/token'
+import { getDatabaseUserById, updateDatabaseUser } from '../utils/user'
 
 /**
  * @typedef UserScore
@@ -52,11 +53,14 @@ export async function claimToken (message) {
       const helpEmbed = mountCommandHelpEmbed(message)
       return message.channel.send({ embed: helpEmbed })
     }
+
     const token = await getDatabaseTokenByCode(code)
     if (!token) {
       return message.channel.send('Não encontrei nenhum token com esse código :(')
     }
+
     const { claimedBy, remainingClaims, value, decreaseValue, minimumValue } = token
+    const { id: userId, username } = message.author
 
     const timesClaimed = claimedBy.length
     let scoreAcquired = value - (timesClaimed * decreaseValue)
@@ -64,7 +68,14 @@ export async function claimToken (message) {
       scoreAcquired = minimumValue
     }
 
-    const userCurrentScore = 0 // TO DO: Get user current score
+    let userCurrentScore = 0
+    let tokensClaimed = []
+    const user = await getDatabaseUserById(userId)
+    if (user) {
+      userCurrentScore = user.score
+      tokensClaimed = user.tokens
+    }
+
     const score = {
       acquired: scoreAcquired,
       total: userCurrentScore + scoreAcquired
@@ -72,23 +83,38 @@ export async function claimToken (message) {
 
     const date = new Date(Date.now())
     const dateString = date.toISOString()
-    const user = {
-      username: message.author.username,
-      email: '',
+    const claimUser = {
+      username: username,
       claimedAt: dateString
     }
 
     const updatedToken = {
       ...token,
       remainingClaims: remainingClaims - 1,
-      claimedBy: claimedBy.concat(user)
+      claimedBy: claimedBy.concat(claimUser)
     }
 
-    const success = await updateDatabaseToken(updatedToken)
-    if (!success) {
-      return message.channel.send('Putz, deu ruim')
+    const updatedUser = {
+      userId,
+      username,
+      score: score.total,
+      tokens: tokensClaimed.concat({
+        code,
+        claimedAt: dateString
+      })
     }
-    const successClaimEmbed = mountClaimEmbed(code, user.username, score)
+
+    const userClaimSuccess = await updateDatabaseUser(updatedUser)
+    if (!userClaimSuccess) {
+      return message.channel.send('Putz, deu ruim ao atualizar o usuário')
+    }
+
+    const tokenClaimSuccess = await updateDatabaseToken(updatedToken)
+    if (!tokenClaimSuccess) {
+      return message.channel.send('Putz, deu ruim ao atualizar o token')
+    }
+
+    const successClaimEmbed = mountClaimEmbed(code, username, score)
     return message.channel.send({ embed: successClaimEmbed })
   } catch (error) {
     console.log(error)
