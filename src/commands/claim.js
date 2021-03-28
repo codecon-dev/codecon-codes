@@ -45,45 +45,52 @@ function mountClaimEmbed (token, username, score) {
  * @returns {Promise<object>}
  */
 export async function claimToken (message) {
-  const { args } = getArgumentsAndOptions(message, '=')
-  const code = args[0]
-  if (!code) {
-    const helpEmbed = mountCommandHelpEmbed(message)
-    return message.channel.send({ embed: helpEmbed })
-  }
-  const token = await getDatabaseTokenByCode(code)
-  if (!token) {
-    return message.channel.send('Não encontrei nenhum token com esse código :(')
-  }
-  const { claimedBy, remainingClaims, value, decreaseValue, minimumValue } = token
+  try {
+    const { args } = getArgumentsAndOptions(message, '=')
+    const code = args[0]
+    if (!code) {
+      const helpEmbed = mountCommandHelpEmbed(message)
+      return message.channel.send({ embed: helpEmbed })
+    }
+    const token = await getDatabaseTokenByCode(code)
+    if (!token) {
+      return message.channel.send('Não encontrei nenhum token com esse código :(')
+    }
+    const { claimedBy, remainingClaims, value, decreaseValue, minimumValue } = token
 
-  const timesClaimed = claimedBy.length
-  let scoreAcquired = value - (timesClaimed * decreaseValue)
-  if (scoreAcquired < minimumValue) {
-    scoreAcquired = minimumValue
-  }
+    const timesClaimed = claimedBy.length
+    let scoreAcquired = value - (timesClaimed * decreaseValue)
+    if (scoreAcquired < minimumValue) {
+      scoreAcquired = minimumValue
+    }
 
-  const userCurrentScore = 0 // TO DO: Get user current score
-  const score = {
-    acquired: scoreAcquired,
-    total: userCurrentScore + scoreAcquired
-  }
+    const userCurrentScore = 0 // TO DO: Get user current score
+    const score = {
+      acquired: scoreAcquired,
+      total: userCurrentScore + scoreAcquired
+    }
 
-  const date = new Date(Date.now())
-  const dateString = date.toISOString()
-  const user = {
-    username: message.author.username,
-    email: '',
-    claimedAt: dateString
-  }
+    const date = new Date(Date.now())
+    const dateString = date.toISOString()
+    const user = {
+      username: message.author.username,
+      email: '',
+      claimedAt: dateString
+    }
 
-  const updatedToken = {
-    ...token,
-    remainingClaims: remainingClaims - 1,
-    claimedBy: claimedBy.concat(user)
-  }
+    const updatedToken = {
+      ...token,
+      remainingClaims: remainingClaims - 1,
+      claimedBy: claimedBy.concat(user)
+    }
 
-  await updateDatabaseToken(updatedToken)
-  const successClaimEmbed = mountClaimEmbed(code, user.username, score)
-  return message.channel.send({ embed: successClaimEmbed })
+    const success = await updateDatabaseToken(updatedToken)
+    if (!success) {
+      return message.channel.send('Putz, deu ruim')
+    }
+    const successClaimEmbed = mountClaimEmbed(code, user.username, score)
+    return message.channel.send({ embed: successClaimEmbed })
+  } catch (error) {
+    console.log(error)
+  }
 }
