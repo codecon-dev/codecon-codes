@@ -17,7 +17,9 @@ export function mockMessage (content, channelMessages = []) {
     return filtered
   }
   return {
-    react: jest.fn(),
+    react: jest.fn(() => ({
+      remove: jest.fn()
+    })),
     content: content,
     channel: {
       send: jest.fn(message => {
