@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import mongoose from 'mongoose'
 import TokenModel from '../models/token'
+import { Token } from './token'
 
 /**
  * Connects mongoose to remote MongoDB.
@@ -41,7 +42,7 @@ export async function disconnectMongoose () {
  * Update or create a token.
  *
  * @param {string} tokenCode
- * @param {object} tokenContent
+ * @param {Token} tokenContent
  * @returns {Promise<TokenModel>}
  */
 export async function createOrUpdateToken (tokenCode, tokenContent) {
