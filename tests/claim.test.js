@@ -1,10 +1,16 @@
 import { claimToken } from '../src/commands'
 import { mockMessage } from './testUtils'
 import { getDatabaseTokenByCode, updateDatabaseToken } from '../src/utils/token'
+import { getDatabaseUserById, updateDatabaseUser } from '../src/utils/user'
 
 jest.mock('../src/utils/token', () => ({
   getDatabaseTokenByCode: jest.fn(),
   updateDatabaseToken: jest.fn()
+}))
+
+jest.mock('../src/utils/user', () => ({
+  getDatabaseUserById: jest.fn(),
+  updateDatabaseUser: jest.fn()
 }))
 
 const mockedToken = {
@@ -19,7 +25,6 @@ const mockedToken = {
   claimedBy: [
     {
       username: 'gabrielnunes',
-      email: 'gabriel@nunes.com',
       claimedAt: '2021-03-14T21:45:59.143Z'
     }
   ],
@@ -35,6 +40,8 @@ describe('claimToken', () => {
   it('sends a success embed when claimed successfully', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
     updateDatabaseToken.mockResolvedValueOnce(true)
+    getDatabaseUserById.mockResolvedValueOnce(null)
+    updateDatabaseUser.mockResolvedValueOnce(true)
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
     const botMessage = await claimToken(userMessage)
@@ -63,6 +70,8 @@ describe('claimToken', () => {
 
   it('updates a token after its claim', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
+    getDatabaseUserById.mockResolvedValueOnce(null)
+    updateDatabaseUser.mockResolvedValueOnce(true)
     jest.spyOn(Date, 'now').mockReturnValue(new Date('2022-09-02T12:00:00Z'))
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
@@ -74,12 +83,10 @@ describe('claimToken', () => {
       claimedBy: [
         {
           username: 'gabrielnunes',
-          email: 'gabriel@nunes.com',
           claimedAt: '2021-03-14T21:45:59.143Z'
         },
         {
           username: 'Mark',
-          email: '',
           claimedAt: '2022-09-02T12:00:00.000Z'
         }
       ]
@@ -93,6 +100,8 @@ describe('claimToken', () => {
       remainingClaims: Infinity
     }
     getDatabaseTokenByCode.mockResolvedValueOnce(infinityToken)
+    getDatabaseUserById.mockResolvedValueOnce(null)
+    updateDatabaseUser.mockResolvedValueOnce(true)
     jest.spyOn(Date, 'now').mockReturnValue(new Date('2022-09-02T12:00:00Z'))
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
