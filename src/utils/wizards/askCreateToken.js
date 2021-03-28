@@ -1,13 +1,13 @@
 
-import { validateTokenCode, mountTokenEmbed, validateAnswerDate, validateNumber } from '../token'
+import { validateTokenCode, mountTokenEmbed, validateAnswerDate, validateNumber, Token } from '../token'
 import { askAndWait, isNegativeAnswer } from '../message'
 import { Message } from 'discord.js'
 
 /**
- * Get options by user input.
+ * Get token by user input.
  *
  * @param { Message } message
- * @returns {object} Options.
+ * @returns {Token|Message}
  */
 export async function askToken (message) {
   const askTokenCodeText = ':label: Opa, qual o código do token que você quer criar? (`/^[a-zA-Z0-9]+$/`)'

@@ -1,12 +1,12 @@
-import { mountTokenEmbed, validateAnswerDate, validateNumber, getDatabaseTokenByCode } from '../../utils/token'
+import { mountTokenEmbed, validateAnswerDate, validateNumber, getDatabaseTokenByCode, Token } from '../../utils/token'
 import { askAndWait, isNegativeAnswer } from '../../utils/message'
 import { Message } from 'discord.js'
 
 /**
- * Get options by user input.
+ * Get token update by user input.
  *
  * @param { Message } message
- * @returns {object} Options.
+ * @returns {Token|Message}
  */
 export async function askTokenUpdate (message) {
   const editOptions = ['description', 'value', 'decreaseValue', 'minimumValue', 'totalClaims', 'expireAt']
