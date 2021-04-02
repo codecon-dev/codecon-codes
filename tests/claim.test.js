@@ -18,7 +18,7 @@ const mockedToken = {
   description: 'Primeiro código da CodeCon 2021!',
   value: 20,
   decreaseValue: 2,
-  minimumValaue: 10,
+  minimumValue: 10,
   totalClaims: 21,
   remainingClaims: 20,
   createdBy: 'markkop',
@@ -61,7 +61,7 @@ describe('claimToken', () => {
     })
   })
 
-  it('sends a not found message if no token is found to be claimed', async () => {
+  it('sends a not found message if no token was found to be claimed', async () => {
     const content = '.claim LOLZINH'
     const userMessage = mockMessage(content)
     const botMessage = await claimToken(userMessage)
@@ -199,6 +199,42 @@ describe('claimToken', () => {
     }))
   })
 
+  it('scores the minimum value for a user', async () => {
+    const token = {
+      ...mockedToken,
+      value: 100,
+      decreaseValue: 10,
+      minimumValue: 90,
+      totalClaims: 3,
+      remainingClaims: Infinity,
+      claimedBy: Array(3).fill(mockedToken.claimedBy[0])
+    }
+    getDatabaseTokenByCode.mockResolvedValueOnce(token)
+    getDatabaseUserById.mockResolvedValueOnce(mockedUser)
+    const content = '.claim CODECON21'
+    const userMessage = mockMessage(content)
+    await claimToken(userMessage)
+
+    expect(updateDatabaseUser).toHaveBeenCalledTimes(1)
+    expect(updateDatabaseUser).toHaveBeenCalledWith(expect.objectContaining({
+      userId: 111,
+      username: 'Mark',
+      score: 190,
+      tokens: [
+        {
+          code: 'TOKEN',
+          claimedAt: '2021-04-24T23:00:00.000Z',
+          value: 100
+        },
+        {
+          code: 'CODECON21',
+          claimedAt: '2022-09-02T12:00:00.000Z',
+          value: 90
+        }
+      ]
+    }))
+  })
+
   it('sends an error message if it fails to update the user', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
     getDatabaseUserById.mockResolvedValueOnce(mockedUser)
@@ -243,5 +279,14 @@ describe('claimToken', () => {
     const userMessage = mockMessage(content)
     const botMessage = await claimToken(userMessage)
     expect(botMessage).toEqual('Esse token expirou :(')
+  })
+
+  it('calls a console log if an unexpected error happens', async () => {
+    const spy = jest.spyOn(global.console, 'log').mockImplementation()
+    const content = '.claim CODECON21'
+    const userMessage = mockMessage(content)
+    delete userMessage.content
+    await claimToken(userMessage)
+    expect(spy).toHaveBeenCalled()
   })
 })
