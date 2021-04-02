@@ -82,12 +82,12 @@ export async function getUserRankPosition (userId) {
  * Creates the User message embed.
  *
  * @param {User} user
- * @returns {Promise<import('discord.js').MessageEmbed>}
+ * @param {number} rank
+ * @returns {import('discord.js').MessageEmbed}
  */
-export async function mountUserEmbed (user) {
+export function mountUserEmbed (user, rank) {
   const { username, userId, score, tokens } = user
   const claimedTokensText = tokens.map(token => token.code).join(', ') || 'Nenhum'
-  const rank = await getUserRankPosition(userId)
   return {
     title: `:bust_in_silhouette: ${username} (${userId})`,
     fields: [

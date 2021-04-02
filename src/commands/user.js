@@ -1,4 +1,4 @@
-import { mountUserEmbed, getDatabaseUserById } from '../utils/user'
+import { mountUserEmbed, getDatabaseUserById, getUserRankPosition } from '../utils/user'
 import { handleMessageError } from '../utils/handleError'
 import { mountCommandHelpEmbed } from './help'
 import { getArgumentsAndOptions } from '../utils/message'
@@ -25,10 +25,11 @@ export async function getUser (message) {
       return message.channel.send('Não encontrei nenhum user com esse id :(')
     }
 
-    const userEmbed = await mountUserEmbed(user)
+    const rank = await getUserRankPosition(userId)
+    const userEmbed = await mountUserEmbed(user, rank)
     return message.channel.send({ embed: userEmbed })
   } catch (error) {
-    message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)
+    return message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
   }
 }
