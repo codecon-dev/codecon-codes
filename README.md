@@ -39,10 +39,14 @@ Update an existing token by answering some questions
 
 List all tokens  
 
+### `.user` _(admins only)_
+
+Get information about a user by Discord ID
+
 ## Develop
 
 * Clone this repository and install dependencies with `npm install`
-* Copy .env.example and rename it to .env
+* Copy `.env.example` and rename it to `.env`
 * Put the credentials needed
 * Run `npm run test` or `npm run test -- --watch` while developing
 * Run `npm start` to run this bot locally
