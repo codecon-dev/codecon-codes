@@ -3,12 +3,24 @@ export default {
     help: 'Resgate um código e contabilize pontos!',
     examples: ['.claim CODECON21', '.claim 123ABC']
   },
-  link: {
-    help: 'Linke o seu usuário do Discord com o email usado para se inscrever no evento',
-    examples: ['.link meu@email.coml']
+  token: {
+    help: `get: veja as informações de um token
+  create: crie um novo token
+  update: atualize uma propriedade de um token
+  list: veja uma lista com todos os tokens em ordem alfabética
+  Obs: comando apenas disponível para cargos previamente configurados`,
+    examples: ['.token get CODECON21', '.token create', '.token update', '.token list']
   },
-  generate: {
-    help: 'Acione um wizard que irá lhe guiar para criar novos códigos (admin only)',
-    examples: ['.generate']
+  about: {
+    help: 'Saiba mais sobre este bot',
+    examples: ['.about']
   },
+  help: {
+    help: 'Boa tentativa',
+    examples: ['.help']
+  },
+  user: {
+    help: 'Veja mais informações sobre um usuário pelo seu ID\nObs: comando disponível apenas para alguns usuários',
+    examples: ['.user 95609311505424384']
+  }
 }
