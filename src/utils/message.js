@@ -177,3 +177,47 @@ export async function removeOrUpdateReaction (reaction, success) {
     await reaction.remove()
   }
 }
+
+/**
+ * Check if the user is a admin.
+ *
+ * @param { Message } message
+ * @returns { Promise<boolean> }
+ */
+export async function isAdmin (message) {
+  const { adminRoles } = botConfig
+  let member = message.member
+
+  const isDirectMessage = isDMChannel(message)
+  if (isDirectMessage) {
+    const userId = message.author.id
+    const guild = message.client.guilds.cache.get(botConfig.guildId)
+    const members = await guild.members.fetch()
+    member = members.get(userId)
+  }
+
+  if (!member) {
+    return false
+  }
+
+  const hasAdminRole = member.roles.cache.some(memberRole => {
+    return adminRoles.some(adminRole => adminRole === memberRole.name)
+  })
+  return hasAdminRole
+}
+
+/**
+ * Check and returns a message if it was sent by a non-admin.
+ *
+ * @param {Message} message
+ * @returns {Promise<boolean>} Message was sent by a non-admin user.
+ */
+export async function handleAdminCommand (message) {
+  const isAdminMessage = await isAdmin(message)
+  if (isAdminMessage) {
+    return false
+  }
+
+  await message.author.send('Apenas administradores podem usar esse comando =/')
+  return true
+}

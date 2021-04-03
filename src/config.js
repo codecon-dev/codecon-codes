@@ -1,4 +1,7 @@
 export default {
   prefix: '.',
-  DMOnlyCommands: ['token', 'claim', 'user']
+  guildId: '713502613458649152',
+  DMOnlyCommands: ['claim'],
+  adminRoles: ['Organização'],
+  adminOnlyCommands: ['token', 'user']
 }
