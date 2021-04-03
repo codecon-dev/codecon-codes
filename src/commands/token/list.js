@@ -1,6 +1,6 @@
 import { getDatabaseTokens } from '../../utils/token'
 import { handleMessageError } from '../../utils/handleError'
-import { truncateFieldValue } from '../../utils/message'
+import { truncateFieldValue, removeOrUpdateReaction } from '../../utils/message'
 import { Message } from 'discord.js'
 
 /**
@@ -55,13 +55,16 @@ function mountTokenListEmbed (tokensCodes) {
  */
 export async function listTokens (message) {
   try {
+    const awaitReaction = await message.react('⏳')
     const tokens = await getDatabaseTokens()
     if (!tokens || !tokens.length) {
+      await removeOrUpdateReaction(awaitReaction, false)
       return message.channel.send('Vish, nenhum token encontrado. Tá tudo certo com a base? :eyes:')
     }
 
     const tokensCodes = tokens.map(token => token.code.toUpperCase()).sort()
     const tokenListEmbed = mountTokenListEmbed(tokensCodes)
+    await removeOrUpdateReaction(awaitReaction, true)
     return message.channel.send({ embed: tokenListEmbed })
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')

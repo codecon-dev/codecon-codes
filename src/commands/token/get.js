@@ -1,7 +1,7 @@
 import { mountTokenEmbed, getDatabaseTokenByCode } from '../../utils/token'
 import { handleMessageError } from '../../utils/handleError'
 import { mountCommandHelpEmbed } from '../help'
-import { getArgumentsAndOptions } from '../../utils/message'
+import { getArgumentsAndOptions, removeOrUpdateReaction } from '../../utils/message'
 import { Message } from 'discord.js'
 
 /**
@@ -18,12 +18,16 @@ export async function getToken (message) {
       const helpEmbed = mountCommandHelpEmbed(message)
       return message.channel.send({ embed: helpEmbed })
     }
+
+    const awaitReaction = await message.react('⏳')
     const token = await getDatabaseTokenByCode(code)
 
     if (!token) {
+      await removeOrUpdateReaction(awaitReaction, false)
       return message.channel.send('Não encontrei nenhum token com esse código :(')
     }
 
+    await removeOrUpdateReaction(awaitReaction, true)
     const tokenEmbed = mountTokenEmbed(token)
     return message.channel.send({ embed: tokenEmbed })
   } catch (error) {
