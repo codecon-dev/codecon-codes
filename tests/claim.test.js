@@ -25,6 +25,7 @@ const mockedToken = {
   claimedBy: [
     {
       username: 'gabrielnunes',
+      id: '588160538110984193',
       claimedAt: '2021-03-14T21:45:59.143Z'
     }
   ],
@@ -141,10 +142,12 @@ describe('claimToken', () => {
       claimedBy: [
         {
           username: 'gabrielnunes',
+          id: '588160538110984193',
           claimedAt: '2021-03-14T21:45:59.143Z'
         },
         {
           username: 'Mark',
+          id: '111',
           claimedAt: '2022-09-02T12:00:00.000Z'
         }
       ]
@@ -254,6 +257,25 @@ describe('claimToken', () => {
     const userMessage = mockMessage(content)
     const botMessage = await claimToken(userMessage)
     expect(botMessage).toEqual('Putz, deu ruim ao atualizar o token')
+  })
+
+  it('sends an already claimed message if the user has already claimed the token', async () => {
+    const claimedToken = {
+      ...mockedToken,
+      claimedBy: [
+        {
+          username: 'Mark',
+          id: '111',
+          claimedAt: '2021-03-14T21:45:59.143Z'
+        }
+      ]
+    }
+    getDatabaseTokenByCode.mockResolvedValueOnce(claimedToken)
+    getDatabaseUserById.mockResolvedValueOnce(mockedUser)
+    const content = '.claim CODECON21'
+    const userMessage = mockMessage(content)
+    const botMessage = await claimToken(userMessage)
+    expect(botMessage).toEqual('Você já resgatou esse token :eyes:')
   })
 
   it('sends an expired token message if it does not have remaining claims', async () => {

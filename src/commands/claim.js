@@ -87,13 +87,19 @@ export async function claimToken (message) {
       return message.channel.send('Esse token expirou :(')
     }
 
+    const { id: userId, username } = message.author
+
+    const hasAlreadyClaimed = claimedBy.some(claimedUser => claimedUser.id === String(userId))
+    if (hasAlreadyClaimed) {
+      return message.channel.send('Você já resgatou esse token :eyes:')
+    }
+
     const timesClaimed = claimedBy.length
     let scoreAcquired = value - (timesClaimed * decreaseValue)
     if (scoreAcquired < minimumValue) {
       scoreAcquired = minimumValue
     }
 
-    const { id: userId, username } = message.author
     let userCurrentScore = 0
     let tokensClaimed = []
     const user = await getDatabaseUserById(userId)
@@ -111,6 +117,7 @@ export async function claimToken (message) {
     const dateString = date.toISOString()
     const claimUser = {
       username: username,
+      id: String(userId),
       claimedAt: dateString
     }
 

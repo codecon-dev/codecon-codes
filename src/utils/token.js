@@ -4,7 +4,7 @@ import { truncateFieldValue } from './message'
 /**
  * @typedef UserClaim
  * @property {string} username
- * @property {string} email
+ * @property {string} id
  * @property {string} claimedAt ISO Date String.
  */
 
