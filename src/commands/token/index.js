@@ -4,6 +4,7 @@ import { listTokens } from './list'
 import { updateToken } from './update'
 import { mountCommandHelpEmbed } from '../help'
 import { getArgumentsAndOptions } from '../../utils/message'
+import { Message } from 'discord.js'
 
 const tokenActions = {
   create: createToken,
@@ -13,12 +14,12 @@ const tokenActions = {
 }
 
 /**
- * Create, join, update or leave a party listing.
+ * Create, update, get or list tokens.
  *
- * @param {object} message
- * @returns {Promise<object>}
+ * @param {Message} message
+ * @returns {Promise<Message>}
  */
-export function token (message) {
+export async function token (message) {
   const { args, options } = getArgumentsAndOptions(message, '=')
   const argument = args[0]
   const isValidArgument = Object.keys(tokenActions).some(key => key === argument)

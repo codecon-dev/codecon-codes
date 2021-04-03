@@ -1,5 +1,5 @@
 import botConfig from '../config'
-import { Message } from 'discord.js'
+import { Message, MessageReaction } from 'discord.js'
 
 /**
  * Get command word from user message.
@@ -134,4 +134,90 @@ const negativeAnswers = ['não', 'nao', 'no', 'n']
  */
 export function isNegativeAnswer (answer) {
   return negativeAnswers.includes(answer.toLowerCase())
+}
+
+/**
+ * Check if the message channel is a Direct Message chanenl.
+ *
+ * @param {Message} message
+ * @returns {boolean}
+ */
+export function isDMChannel (message) {
+  return message.channel.type === 'dm'
+}
+
+/**
+ * Check and returns a message if it's not a DM channel.
+ *
+ * @param {Message} message
+ * @returns {Promise<boolean>} Message was in wrong channel.
+ */
+export async function handleWrongChannel (message) {
+  const isDirectMessage = isDMChannel(message)
+  if (isDirectMessage) {
+    return false
+  }
+  await message.delete()
+  await message.author.send('Opa, você só pode usar esse comando aqui nesse chat privado comigo. Tenta aí ;D')
+  return true
+}
+
+/**
+ * Remove a waiting reaction or react with a checkmark if it's a DM channel.
+ *
+ * @param { MessageReaction } reaction
+ * @param { boolean } success
+ */
+export async function removeOrUpdateReaction (reaction, success) {
+  const isDirectMessage = isDMChannel(reaction.message)
+  if (isDirectMessage) {
+    const emoji = success ? '✅' : '❌'
+    await reaction.message.react(emoji)
+  } else {
+    await reaction.remove()
+  }
+}
+
+/**
+ * Check if the user is a admin.
+ *
+ * @param { Message } message
+ * @returns { Promise<boolean> }
+ */
+export async function isAdmin (message) {
+  const { adminRoles } = botConfig
+  let member = message.member
+
+  const isDirectMessage = isDMChannel(message)
+  if (isDirectMessage) {
+    const userId = message.author.id
+    const guild = message.client.guilds.cache.get(botConfig.guildId)
+    const members = await guild.members.fetch()
+    member = members.get(userId)
+  }
+
+  if (!member) {
+    return false
+  }
+
+  const hasAdminRole = member.roles.cache.some(memberRole => {
+    return adminRoles.some(adminRole => adminRole === memberRole.name)
+  })
+  return hasAdminRole
+}
+
+/**
+ * Check and returns a message if it was sent by a non-admin.
+ *
+ * @param {Message} message
+ * @returns {Promise<boolean>} Message was sent by a non-admin user.
+ */
+export async function handleAdminCommand (message) {
+  const isAdminMessage = await isAdmin(message)
+  if (isAdminMessage) {
+    return false
+  }
+
+  await message.author.send('Apenas administradores podem usar esse comando =/')
+  return true
 }

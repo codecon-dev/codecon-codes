@@ -1,6 +1,6 @@
 export default {
   claim: {
-    help: 'Resgate um código e contabilize pontos!',
+    help: 'Resgate um código e contabilize pontos!\nObs: funciona apenas no chat privado com o bot',
     examples: ['.claim CODECON21', '.claim 123ABC']
   },
   token: {
