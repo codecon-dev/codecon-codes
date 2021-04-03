@@ -1,11 +1,11 @@
 import Discord from 'discord.js'
 import { getHelp, getAbout, claimToken, token, getUser } from './commands'
 import { handleMessageError } from './utils/handleError'
-import { getCommand } from './utils/message'
+import { getCommand, handleWrongChannel } from './utils/message'
 import config from './config'
 import dotenv from 'dotenv'
 dotenv.config()
-const { prefix } = config
+const { prefix, DMOnlyCommands } = config
 
 const commandActions = {
   help: getHelp,
@@ -32,9 +32,15 @@ async function init () {
       if (message.author.bot) return
 
       if (!message.content.startsWith(prefix)) return
-      if (!message.guild) return
 
       const command = getCommand(prefix, message)
+
+      const isDMOnlyCommand = DMOnlyCommands.some(DMOnlyCommand => DMOnlyCommand === command)
+      if (isDMOnlyCommand) {
+        const isWrongChannel = await handleWrongChannel(message)
+        if (isWrongChannel) return
+      }
+
       const action = commandActions[command]
 
       if (!action) return

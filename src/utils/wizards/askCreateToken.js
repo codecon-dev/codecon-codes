@@ -7,7 +7,7 @@ import { Message } from 'discord.js'
  * Get token by user input.
  *
  * @param { Message } message
- * @returns {Token|Message}
+ * @returns {Promise<Token|Message>}
  */
 export async function askToken (message) {
   const askTokenCodeText = ':label: Opa, qual o código do token que você quer criar? (`/^[a-zA-Z0-9]+$/`)'

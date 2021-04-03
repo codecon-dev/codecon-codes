@@ -1,5 +1,5 @@
 import { mountCommandHelpEmbed } from './help'
-import { getArgumentsAndOptions } from '../utils/message'
+import { getArgumentsAndOptions, removeOrUpdateReaction } from '../utils/message'
 import { getDatabaseTokenByCode, updateDatabaseToken } from '../utils/token'
 import { getDatabaseUserById, updateDatabaseUser } from '../utils/user'
 import gifs from '../../data/gifs'
@@ -72,7 +72,7 @@ export async function claimToken (message) {
     const awaitReaction = await message.react('⏳')
     const token = await getDatabaseTokenByCode(code)
     if (!token) {
-      await awaitReaction.remove()
+      await removeOrUpdateReaction(awaitReaction, false)
       return message.channel.send('Não encontrei nenhum token com esse código :(')
     }
 
@@ -133,18 +133,18 @@ export async function claimToken (message) {
 
     const userClaimSuccess = await updateDatabaseUser(updatedUser)
     if (!userClaimSuccess) {
-      await awaitReaction.remove()
+      await removeOrUpdateReaction(awaitReaction, false)
       return message.channel.send('Putz, deu ruim ao atualizar o usuário')
     }
 
     const tokenClaimSuccess = await updateDatabaseToken(updatedToken)
     if (!tokenClaimSuccess) {
-      await awaitReaction.remove()
+      await removeOrUpdateReaction(awaitReaction, false)
       return message.channel.send('Putz, deu ruim ao atualizar o token')
     }
 
     const successClaimEmbed = mountClaimEmbed(code, username, score)
-    await awaitReaction.remove()
+    await removeOrUpdateReaction(awaitReaction, true)
     return message.channel.send({ embed: successClaimEmbed })
   } catch (error) {
     console.log(error)

@@ -1,5 +1,5 @@
 import botConfig from '../config'
-import { Message } from 'discord.js'
+import { Message, MessageReaction } from 'discord.js'
 
 /**
  * Get command word from user message.
@@ -134,4 +134,46 @@ const negativeAnswers = ['não', 'nao', 'no', 'n']
  */
 export function isNegativeAnswer (answer) {
   return negativeAnswers.includes(answer.toLowerCase())
+}
+
+/**
+ * Check if the message channel is a Direct Message chanenl.
+ *
+ * @param {Message} message
+ * @returns {boolean}
+ */
+export function isDMChannel (message) {
+  return message.channel.type === 'dm'
+}
+
+/**
+ * Check and returns a message if it's not a DM channel.
+ *
+ * @param {Message} message
+ * @returns {Promise<boolean>} Message was in wrong channel.
+ */
+export async function handleWrongChannel (message) {
+  const isDirectMessage = isDMChannel(message)
+  if (isDirectMessage) {
+    return false
+  }
+  await message.delete()
+  await message.author.send('Opa, você só pode usar esse comando aqui nesse chat privado comigo. Tenta aí ;D')
+  return true
+}
+
+/**
+ * Remove a waiting reaction or react with a checkmark if it's a DM channel.
+ *
+ * @param { MessageReaction } reaction
+ * @param { boolean } success
+ */
+export async function removeOrUpdateReaction (reaction, success) {
+  const isDirectMessage = isDMChannel(reaction.message)
+  if (isDirectMessage) {
+    const emoji = success ? '✅' : '❌'
+    await reaction.message.react(emoji)
+  } else {
+    await reaction.remove()
+  }
 }

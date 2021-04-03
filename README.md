@@ -17,7 +17,7 @@ Find more about this bot
 
 Get help for some commands
 
-### `.claim`
+### `.claim _(DM only)_`
 
 Claim a token by providing its code  
 Example: `.claim CODECON21`  

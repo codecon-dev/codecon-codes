@@ -1,3 +1,4 @@
 export default {
-  prefix: '.'
+  prefix: '.',
+  DMOnlyCommands: ['token', 'claim', 'user']
 }
