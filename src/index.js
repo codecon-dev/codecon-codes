@@ -1,5 +1,5 @@
 import Discord from 'discord.js'
-import { getHelp, getAbout, claimToken, token, getUser } from './commands'
+import { getHelp, getAbout, claimToken, token, getUser, getSelfUser } from './commands'
 import { handleMessageError } from './utils/handleError'
 import { getCommand, handleWrongChannel, handleAdminCommand } from './utils/message'
 import config from './config'
@@ -14,6 +14,7 @@ const commandActions = {
   claim: claimToken,
   token: token,
   user: getUser,
+  me: getSelfUser,
   time: (message) => message.reply(new Date().toString())
 }
 

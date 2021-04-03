@@ -89,6 +89,7 @@ export function mountUserEmbed (user, rank) {
   const { username, userId, score, tokens } = user
   const claimedTokensText = tokens.map(token => token.code).join(', ') || 'Nenhum'
   return {
+    color: 'AQUA',
     title: `:bust_in_silhouette: ${username} (${userId})`,
     fields: [
       {
@@ -104,6 +105,36 @@ export function mountUserEmbed (user, rank) {
       {
         name: 'Tokens',
         value: truncateFieldValue(claimedTokensText)
+      }
+    ]
+  }
+}
+
+/**
+ * Creates the User message embed.
+ *
+ * @param {User} user
+ * @param {number|null} rank
+ * @returns {import('discord.js').MessageEmbed}
+ */
+export function mountSelfUserEmbed (user, rank) {
+  const { username, score, avatar } = user
+  return {
+    color: 'AQUA',
+    title: `:bust_in_silhouette: ${username}`,
+    thumbnail: {
+      url: avatar
+    },
+    fields: [
+      {
+        name: 'Rank',
+        value: `#${rank || '??'}`,
+        inline: true
+      },
+      {
+        name: 'Pontos',
+        value: score,
+        inline: true
       }
     ]
   }
