@@ -26,7 +26,7 @@ import { truncateFieldValue } from './message'
 /**
  * Get all tokens from database.
  *
- * @returns {Token[]}
+ * @returns {Promise<Token[]>}
  */
 export async function getDatabaseTokens () {
   try {

@@ -6,6 +6,7 @@ import config from './config'
 import dotenv from 'dotenv'
 dotenv.config()
 const { prefix, DMOnlyCommands, adminOnlyCommands } = config
+let userPool = []
 
 const commandActions = {
   help: getHelp,
@@ -50,7 +51,8 @@ async function init () {
       const action = commandActions[command]
 
       if (!action) return
-      await action(message)
+
+      await lockMessage(message.author.id, () => action(message))
     } catch (error) {
       handleMessageError(error, message)
     }
@@ -60,3 +62,16 @@ async function init () {
 }
 
 init()
+
+/**
+ * Locks a user to not trigger multiple commands.
+ *
+ * @param {string} userId
+ * @param {Function} unlockedFunction
+ */
+async function lockMessage (userId, unlockedFunction) {
+  if (userPool.includes(userId)) return
+  userPool.push(userId)
+  await unlockedFunction()
+  userPool = userPool.filter(id => id !== userId)
+}
