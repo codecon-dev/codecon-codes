@@ -68,7 +68,7 @@ export async function updateDatabaseUser (user) {
 export async function getUserRankPosition (userId) {
   try {
     const users = await getDatabaseUsers()
-    users.sort((a, b) => a.score - b.score)
+    users.sort((a, b) => b.score - a.score)
     const matchingUser = users.find(user => user.userId === userId)
     const userIndex = users.indexOf(matchingUser)
     return userIndex + 1
