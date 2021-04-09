@@ -28,7 +28,7 @@ export async function getUser (message) {
     }
 
     const rank = await getUserRankPosition(userId)
-    const userEmbed = await mountUserEmbed(user, rank)
+    const userEmbed = mountUserEmbed(user, rank)
     await removeOrUpdateReaction(awaitReaction, true)
     return message.channel.send({ embed: userEmbed })
   } catch (error) {
