@@ -9,37 +9,45 @@ This is a Discord Bot that helps to manage the gamification feature for the Code
 
 ## Commands
 
-### `.about`
+### 🔶 `.about`
 
 Find more about this bot  
 
-### `.help`
+### 🔶 `.help`
 
 Get help for some commands
 
-### `.claim _(DM only)_`
+### 🔶 `.rank`
+
+Get the top 10 users in the rank and their scores
+
+### 🔶 `.me`
+
+Get your rank position and score
+
+### 🔶 `.claim` _(DM only)_
 
 Claim a token by providing its code  
 Example: `.claim CODECON21`  
 
-### `.token get` _(admins only)_
+### 🔶 `.token get` _(admins only)_
 
 Check the details from a given token.  
 Example: `.token get CODECON21`
 
-### `.token create` _(admins only)_
+### 🔶 `.token create` _(admins only)_
 
 Create a new token by answering some questions  
 
-### `.token update` _(admins only)_
+### 🔶 `.token update` _(admins only)_
 
 Update an existing token by answering some questions  
 
-### `.token list` _(admins only)_
+### 🔶 `.token list` _(admins only)_
 
 List all tokens  
 
-### `.user` _(admins only)_
+### 🔶 `.user` _(admins only)_
 
 Get information about a user by Discord ID
 
