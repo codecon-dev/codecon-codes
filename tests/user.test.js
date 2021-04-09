@@ -62,8 +62,13 @@ describe('getUser', () => {
     const botMessage = await getUser(userMessage)
     expect(botMessage).toMatchObject({
       embed: {
-        title: ':bust_in_silhouette: Mark (123)',
+        title: ':bust_in_silhouette: Mark',
         fields: [
+          {
+            inline: true,
+            name: 'ID',
+            value: '123'
+          },
           {
             inline: true,
             name: 'Rank',

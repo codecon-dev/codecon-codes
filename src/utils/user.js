@@ -90,8 +90,13 @@ export function mountUserEmbed (user, rank) {
   const claimedTokensText = tokens.map(token => token.code).join(', ') || 'Nenhum'
   return {
     color: 'AQUA',
-    title: `:bust_in_silhouette: ${username} (${userId})`,
+    title: `:bust_in_silhouette: ${username}`,
     fields: [
+      {
+        name: 'ID',
+        value: userId,
+        inline: true
+      },
       {
         name: 'Rank',
         value: `#${rank}`,
