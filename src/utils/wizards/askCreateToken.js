@@ -99,6 +99,7 @@ export async function askToken (message) {
   }
 
   const tokenEmbed = mountTokenEmbed(token)
+  delete tokenEmbed.footer
   const tokenCreateConfirmationMessage = 'Saca só como ficou. Confirma a criação desse token?'
   message.channel.send({ embed: tokenEmbed })
   const { content: tokenCreateConfirmation } = await askAndWait(tokenCreateConfirmationMessage, message)
