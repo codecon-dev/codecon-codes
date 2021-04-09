@@ -19,7 +19,7 @@ export async function askToken (message) {
     return message.channel.send(tokenCodeValidation.message)
   }
 
-  const askTokenDescriptionText = ':speech_balloon: Manda aí uma descrição curta pra esse token:'
+  const askTokenDescriptionText = ':speech_balloon: Saquei. Manda aí uma descrição curta pra esse token:'
   const { content: description } = await askAndWait(askTokenDescriptionText, message)
   if (!description) return {}
 
