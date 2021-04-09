@@ -12,7 +12,7 @@ function getMoreHelpFields () {
   const commandsListText = Object.keys(commandsHelp).map(command => `\`${command}\``).join(', ')
   return [
     {
-      name: 'Available Commands',
+      name: 'Comandos disponíveis',
       value: commandsListText
     }
   ]
@@ -28,11 +28,11 @@ export function mountCommandHelpEmbed (messageOrArgument) {
   const command = typeof messageOrArgument === 'string' ? messageOrArgument : getCommand(prefix, messageOrArgument)
   return {
     color: 'LIGHT_GREY',
-    title: `:grey_question: Help: \`.help ${command}\``,
+    title: `:grey_question: Ajuda: \`.help ${command}\``,
     description: commandsHelp[command].help,
     fields: [
       {
-        name: 'Examples',
+        name: 'Exemplos',
         value: commandsHelp[command].examples.map(example => `\`${example}\``).join('\n')
       },
       ...getMoreHelpFields()
@@ -55,7 +55,7 @@ export function getHelp (message) {
   const embed = {
     color: 'LIGHT_GREY',
     title: ':grey_question: Help',
-    description: 'type `.help <command>` to get help for an specific command',
+    description: 'Digite `.help <command>` para obter ajuda de um comando específico',
     fields: getMoreHelpFields()
   }
   if (!hasArguments) {

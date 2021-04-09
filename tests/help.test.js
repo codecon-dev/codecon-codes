@@ -19,10 +19,10 @@ describe('getHelp', () => {
     expect(botMessage.embed).toMatchObject({
       color: 'LIGHT_GREY',
       title: ':grey_question: Help',
-      description: 'type `.help <command>` to get help for an specific command',
+      description: 'Digite `.help <command>` para obter ajuda de um comando específico',
       fields: [
         {
-          name: 'Available Commands',
+          name: 'Comandos disponíveis',
           value: Object.keys(commandsHelp).map(command => `\`${command}\``).join(', ')
         }
       ]
@@ -39,7 +39,7 @@ describe('getHelp', () => {
       description: 'You can get help for only one command',
       fields: [
         {
-          name: 'Available Commands',
+          name: 'Comandos disponíveis',
           value: Object.keys(commandsHelp).map(command => `\`${command}\``).join(', ')
         }
       ]

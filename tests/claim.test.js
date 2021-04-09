@@ -57,7 +57,7 @@ describe('claimToken', () => {
     const botMessage = await claimToken(userMessage)
     expect(botMessage).toMatchObject({
       embed: {
-        title: ':grey_question: Help: `.help claim`'
+        title: ':grey_question: Ajuda: `.help claim`'
       }
     })
   })

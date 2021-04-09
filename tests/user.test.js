@@ -41,7 +41,7 @@ describe('getUser', () => {
     const botMessage = await getUser(userMessage)
     expect(botMessage).toMatchObject({
       embed: {
-        title: ':grey_question: Help: `.help user`'
+        title: ':grey_question: Ajuda: `.help user`'
       }
     })
   })
