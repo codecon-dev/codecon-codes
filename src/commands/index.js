@@ -4,6 +4,7 @@ import { getUser } from './user'
 import { claimToken } from './claim'
 import { token } from './token'
 import { getSelfUser } from './me'
+import { getRank } from './rank'
 
 export {
   getHelp,
@@ -11,5 +12,6 @@ export {
   getUser,
   claimToken,
   token,
-  getSelfUser
+  getSelfUser,
+  getRank
 }
