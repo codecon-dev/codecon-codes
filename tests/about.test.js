@@ -9,7 +9,7 @@ describe('getAbout', () => {
     const botMessage = getAbout(userMessage)
     expect(botMessage.embed).toMatchObject({
       color: 'YELLOW',
-      title: ':robot: About codecon-codes',
+      title: ':robot: About code-codes',
       description: aboutText
     })
   })

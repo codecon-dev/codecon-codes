@@ -1,4 +1,4 @@
-# :robot: Codecon Codes
+# :robot: Code-codes
 
 ![Repo status](https://www.repostatus.org/badges/latest/active.svg)
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)

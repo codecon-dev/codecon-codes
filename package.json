@@ -1,5 +1,5 @@
 {
-  "name": "codecon-codes",
+  "name": "code-codes",
   "version": "0.0.1",
   "description": "A Discord Bot to manage CodeCon's Gamification",
   "main": "index.js",
