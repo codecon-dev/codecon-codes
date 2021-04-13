@@ -23,9 +23,11 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.11.2",
+    "csv-parser": "^3.0.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.12.2"
+    "mongoose": "^5.12.2",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.5",

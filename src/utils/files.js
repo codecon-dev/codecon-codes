@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import fs from 'fs'
 
 /**
@@ -27,4 +28,21 @@ export function saveFile (data, path) {
   } catch (err) {
     console.error(err)
   }
+}
+
+/**
+ * Download a file from URL into path.
+ *
+ * @param {string} url
+ * @param {string} path
+ * @returns {Promise}
+ */
+export async function downloadFile (url, path) {
+  const res = await fetch(url)
+  const fileStream = fs.createWriteStream(path)
+  return new Promise((resolve, reject) => {
+    res.body.pipe(fileStream)
+    res.body.on('error', reject)
+    fileStream.on('finish', resolve)
+  })
 }
