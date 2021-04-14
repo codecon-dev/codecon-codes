@@ -23,7 +23,16 @@ const commandActions = {
  * Initialize this bot.
  */
 async function init () {
-  const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
+  const client = new Discord.Client({
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    ws: {
+      intents: new Discord.Intents([
+        Discord.Intents.NON_PRIVILEGED,
+        'GUILD_MEMBERS'
+      ])
+    }
+
+  })
 
   client.on('ready', async function () {
     console.log(`Online on ${client.guilds.cache.size} servers: ${client.guilds.cache.map(ch => ch.name).join(', ')}`)
