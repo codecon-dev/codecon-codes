@@ -1,9 +1,9 @@
-import { downloadFile } from '../../utils/files'
+import { downloadFile, readAndMapCsvTokens } from '../../utils/files'
+import { removeOrUpdateReaction } from '../../utils/message'
 import { askTokenImport } from '../../utils/wizards/askTokenImport'
 import { handleMessageError } from '../../utils/handleError'
+import { createDatabaseToken } from '../../utils/token'
 import { Message } from 'discord.js'
-import csv from 'csv-parser'
-import fs from 'fs'
 
 /**
  * Create a party message on the parties channel.
@@ -18,17 +18,28 @@ export async function importToken (message) {
       return
     }
 
-    await downloadFile(csvUrl, 'data/tokenscsv.csv')
-    const results = []
+    const processingText = 'Boa, agora pera aí enquanto eu processo tudo...'
+    const processingMessage = await message.channel.send(processingText)
 
-    fs.createReadStream('data/tokenscsv.csv')
-      .pipe(csv())
-      .on('data', (data) => results.push(data))
-      .on('end', () => {
-        console.log(results)
-      })
+    const awaitReaction = await processingMessage.react('⏳')
+    const csvFilePath = 'data/tokenscsv.csv'
+    await downloadFile(csvUrl, csvFilePath)
+    const tokens = await readAndMapCsvTokens(csvFilePath, message.author.username)
 
-    return message.channel.send('Token atualizado!')
+    const failedTokens = []
+    for (let index = 0; index < tokens.length; index++) {
+      const token = tokens[index]
+      const success = await createDatabaseToken(token)
+      if (!success) {
+        failedTokens.push(token.code)
+        console.log(`Token ${token.code} deu ruim =/`)
+        continue
+      }
+      console.log(`Token ${token.code} criado!`)
+    }
+
+    await removeOrUpdateReaction(awaitReaction, true)
+    return message.channel.send(`Dos ${tokens.length} tokens, ${failedTokens.length} deram ruim: ${failedTokens.join(', ')}`)
   } catch (error) {
     message.channel.send('Dang, something went very wrong. Try asking for help. Anyone?')
     handleMessageError(error, message)

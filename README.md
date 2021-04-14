@@ -47,6 +47,10 @@ Update an existing token by answering some questions
 
 List all tokens  
 
+### 🔶 `.token import` _(admins only)_
+
+Import a CSV file containing tokens  
+
 ### 🔶 `.user` _(admins only)_
 
 Get information about a user by Discord ID
