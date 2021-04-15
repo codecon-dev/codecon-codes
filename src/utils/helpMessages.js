@@ -21,10 +21,10 @@ export default {
     examples: ['.help']
   },
   user: {
-    help: `Veja mais informações sobre um usuário pelo seu ID
+    help: `Veja mais informações sobre um usuário pelo seu ID ou Tag
 Dica: ative o modo desenvolvedor nas configurações "Avançado" do discord para poder copiar o ID clicando com o botão direito no usuário
 Obs: comando disponível apenas para alguns usuários`,
-    examples: ['.user 95609311505424384']
+    examples: ['.user 95609311505424384', '.user Mark#9605']
   },
   me: {
     help: 'Veja mais informações sobre você mesmo',
