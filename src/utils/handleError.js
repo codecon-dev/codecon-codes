@@ -20,7 +20,7 @@ async function reactWithErrorEmoji (message) {
 export function handleMessageError (error, message) {
   const guildName = message && message.guild && message.guild.name
   const channelName = message && message.channel && message.channel.name
-  const authorName = message && message.author && message.author.username
+  const authorName = message && message.author && message.author.tag
   const authorTag = message && message.author && message.author.tag
   const errorText = error.toString() || ''
   console.log(`${errorText} on guild "${guildName}", channel "${channelName}" by ${authorName}(${authorTag}) with content "${message.content}"`)
@@ -39,7 +39,7 @@ export function handleMessageError (error, message) {
  */
 export function handleReactionError (error, reaction, user) {
   const errorText = error.toString() || ''
-  console.log(`${errorText} on guild "${reaction.message.guild.name}", channel "${reaction.message.channel.name}" by ${user.username}`)
+  console.log(`${errorText} on guild "${reaction.message.guild.name}", channel "${reaction.message.channel.name}" by ${user.tag}`)
   if (errorText.includes('TypeError')) {
     console.log(error)
   }

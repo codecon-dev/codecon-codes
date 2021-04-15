@@ -24,7 +24,7 @@ const mockedToken = {
   createdBy: 'markkop',
   claimedBy: [
     {
-      username: 'gabrielnunes',
+      tag: 'gabrielnunes',
       id: '588160538110984193',
       claimedAt: '2021-03-14T21:45:59.143Z'
     }
@@ -35,7 +35,7 @@ const mockedToken = {
 
 const mockedUser = {
   userId: '123',
-  username: 'Mark',
+  tag: 'Mark',
   score: 100,
   tokens: [
     {
@@ -141,12 +141,12 @@ describe('claimToken', () => {
       remainingClaims: 19,
       claimedBy: [
         {
-          username: 'gabrielnunes',
+          tag: 'gabrielnunes',
           id: '588160538110984193',
           claimedAt: '2021-03-14T21:45:59.143Z'
         },
         {
-          username: 'Mark',
+          tag: 'Mark',
           id: '111',
           claimedAt: '2022-09-02T12:00:00.000Z'
         }
@@ -185,7 +185,7 @@ describe('claimToken', () => {
     expect(updateDatabaseUser).toHaveBeenCalledTimes(1)
     expect(updateDatabaseUser).toHaveBeenCalledWith(expect.objectContaining({
       userId: 111,
-      username: 'Mark',
+      tag: 'Mark',
       score: 118,
       tokens: [
         {
@@ -221,7 +221,7 @@ describe('claimToken', () => {
     expect(updateDatabaseUser).toHaveBeenCalledTimes(1)
     expect(updateDatabaseUser).toHaveBeenCalledWith(expect.objectContaining({
       userId: 111,
-      username: 'Mark',
+      tag: 'Mark',
       score: 190,
       tokens: [
         {
@@ -264,7 +264,7 @@ describe('claimToken', () => {
       ...mockedToken,
       claimedBy: [
         {
-          username: 'Mark',
+          tag: 'Mark',
           id: '111',
           claimedAt: '2021-03-14T21:45:59.143Z'
         }

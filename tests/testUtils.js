@@ -36,7 +36,7 @@ export function mockMessage (content, channelMessages = []) {
     },
     author: {
       id: 111,
-      username: 'Mark',
+      tag: 'Mark',
       displayAvatarURL: jest.fn(() => 'https://www.image.com/url.webp')
     },
     guild: {

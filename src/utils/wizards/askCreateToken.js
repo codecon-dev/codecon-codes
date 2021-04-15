@@ -95,7 +95,7 @@ export async function askToken (message) {
     remainingClaims: totalClaims,
     claimedBy: [],
     expireAt: expireDate,
-    createdBy: message.author.username
+    createdBy: message.author.tag
   }
 
   const tokenEmbed = mountTokenEmbed(token)

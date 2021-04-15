@@ -19,7 +19,7 @@ jest.mock('../src/utils/user', () => {
 
 const mockedUser = {
   userId: '123',
-  username: 'Mark',
+  tag: 'Mark',
   score: 100,
   tokens: [
     {

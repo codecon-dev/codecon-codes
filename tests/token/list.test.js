@@ -23,7 +23,7 @@ const mockedTokens = [
     createdBy: 'markkop',
     claimedBy: [
       {
-        username: 'gabrielnunes',
+        tag: 'gabrielnunes',
         email: 'gabriel@nunes.com',
         claimedAt: '2021-03-14T21:45:59.143Z'
       }

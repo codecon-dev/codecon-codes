@@ -3,7 +3,7 @@ import { truncateFieldValue } from './message'
 
 /**
  * @typedef UserClaim
- * @property {string} username
+ * @property {string} tag
  * @property {string} id
  * @property {string} claimedAt ISO Date String.
  */
@@ -176,7 +176,7 @@ export function validateNumber (number) {
  */
 export function mountTokenEmbed (token) {
   const { claimedBy, createdAt, expireAt } = token
-  const claimedByText = (claimedBy || []).map(user => user.username).join(', ') || 'Ninguém'
+  const claimedByText = (claimedBy || []).map(user => user.tag).join(', ') || 'Ninguém'
   const createdAtText = createdAt ? new Date(createdAt) : 'Ainda não foi criado'
   const expirtAtDate = new Date(expireAt)
   const expireAtText = expireAt ? expirtAtDate.toISOString() : 'Não expira'

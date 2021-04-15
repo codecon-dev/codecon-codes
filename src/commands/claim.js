@@ -24,11 +24,11 @@ function getRandom (list) {
  * Created the embed message with sublimations found list.
  *
  * @param {string} code
- * @param {string} username
+ * @param {string} tag
  * @param {UserScore} score
  * @returns {import('discord.js').MessageEmbed}
  */
-function mountClaimEmbed (code, username, score) {
+function mountClaimEmbed (code, tag, score) {
   return {
     color: 'YELLOW',
     title: `:trophy: Código ${code} resgatado!`,
@@ -38,7 +38,7 @@ function mountClaimEmbed (code, username, score) {
     fields: [
       {
         name: 'Usuário',
-        value: username
+        value: tag
       },
       {
         name: 'Pontos obtidos',
@@ -87,7 +87,7 @@ export async function claimToken (message) {
       return message.channel.send('Esse token expirou :(')
     }
 
-    const { id: userId, username } = message.author
+    const { id: userId, tag } = message.author
 
     const hasAlreadyClaimed = claimedBy.some(claimedUser => claimedUser.id === String(userId))
     if (hasAlreadyClaimed) {
@@ -116,7 +116,7 @@ export async function claimToken (message) {
     const date = new Date(Date.now())
     const dateString = date.toISOString()
     const claimUser = {
-      username: username,
+      tag: tag,
       id: String(userId),
       claimedAt: dateString
     }
@@ -129,7 +129,7 @@ export async function claimToken (message) {
 
     const updatedUser = {
       userId,
-      username,
+      tag,
       score: score.total,
       tokens: tokensClaimed.concat({
         code,
@@ -150,7 +150,7 @@ export async function claimToken (message) {
       return message.channel.send('Putz, deu ruim ao atualizar o token')
     }
 
-    const successClaimEmbed = mountClaimEmbed(code, username, score)
+    const successClaimEmbed = mountClaimEmbed(code, tag, score)
     await removeOrUpdateReaction(awaitReaction, true)
     return message.channel.send({ embed: successClaimEmbed })
   } catch (error) {
