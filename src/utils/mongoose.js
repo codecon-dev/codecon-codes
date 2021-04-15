@@ -55,7 +55,6 @@ export async function createOrUpdateToken (tokenCode, tokenContent) {
       upsert: true
     })
     await token.save()
-    await disconnectMongoose()
     return token
   } catch (error) {
     console.log(error)
@@ -78,7 +77,6 @@ export async function getTokenFromMongo (tokenCode) {
     delete token._id
     delete token.__v
     delete token.id
-    await disconnectMongoose()
     return token
   } catch (error) {
     console.log(error)
@@ -94,7 +92,6 @@ export async function getTokensFromMongo () {
   try {
     await connectMongoose()
     const allTokens = await TokenModel.find({})
-    await disconnectMongoose()
     return allTokens
   } catch (error) {
     console.log(error)
@@ -116,7 +113,6 @@ export async function createOrUpdateUser (userId, userContent) {
       upsert: true
     })
     await user.save()
-    await disconnectMongoose()
     return user
   } catch (error) {
     console.log(error)
@@ -140,7 +136,6 @@ export async function getUserFromMongo (userIdOrTag) {
     delete user._id
     delete user.__v
     delete user.id
-    await disconnectMongoose()
     return user
   } catch (error) {
     console.log(error)
@@ -159,7 +154,6 @@ export async function getUsersFromMongo () {
     if (!users) {
       return []
     }
-    await disconnectMongoose()
     return users
   } catch (error) {
     console.log(error)
