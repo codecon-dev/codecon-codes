@@ -13,7 +13,7 @@ function mountRankEmbed (users) {
   const rankText = users.map((user, index) => {
     const position = index + 1
     const positionText = convertToCodeBlock(`#${position}`, 3)
-    const name = convertToCodeBlock(user.username, 32)
+    const name = convertToCodeBlock(user.tag || user.username, 32)
     const score = convertToCodeBlock(user.score, 5)
     return `${positionText} ${name} ${score}`
   })

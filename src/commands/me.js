@@ -11,7 +11,7 @@ import { Message } from 'discord.js'
  */
 export async function getSelfUser (message) {
   try {
-    const { username, id: userId } = message.author
+    const { tag, id: userId } = message.author
     const avatar = message.author.displayAvatarURL()
     const awaitReaction = await message.react('⏳')
     let user = await getDatabaseUserById(userId)
@@ -22,7 +22,7 @@ export async function getSelfUser (message) {
       user.avatar = avatar
       userEmbed = mountSelfUserEmbed(user, rank)
     } else {
-      user = { username, score: 0, avatar }
+      user = { tag, score: 0, avatar }
       userEmbed = mountSelfUserEmbed(user, null)
     }
 

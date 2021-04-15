@@ -24,7 +24,7 @@ export async function importToken (message) {
     const awaitReaction = await processingMessage.react('⏳')
     const csvFilePath = 'data/tokenscsv.csv'
     await downloadFile(csvUrl, csvFilePath)
-    const tokens = await readAndMapCsvTokens(csvFilePath, message.author.username)
+    const tokens = await readAndMapCsvTokens(csvFilePath, message.author.tag)
 
     const failedTokens = []
     for (let index = 0; index < tokens.length; index++) {

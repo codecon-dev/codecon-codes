@@ -4,7 +4,7 @@ import { truncateFieldValue } from './message'
 /**
  * @typedef User
  * @property {string} userId
- * @property {string} username
+ * @property {string} tag
  * @property {number} score
  * @property {Array} tokens
  */
@@ -86,11 +86,11 @@ export async function getUserRankPosition (userId) {
  * @returns {import('discord.js').MessageEmbed}
  */
 export function mountUserEmbed (user, rank) {
-  const { username, userId, score, tokens } = user
+  const { tag, userId, score, tokens } = user
   const claimedTokensText = tokens.map(token => token.code).join(', ') || 'Nenhum'
   return {
     color: 'AQUA',
-    title: `:bust_in_silhouette: ${username}`,
+    title: `:bust_in_silhouette: ${tag}`,
     fields: [
       {
         name: 'ID',
@@ -123,10 +123,10 @@ export function mountUserEmbed (user, rank) {
  * @returns {import('discord.js').MessageEmbed}
  */
 export function mountSelfUserEmbed (user, rank) {
-  const { username, score, avatar } = user
+  const { tag, score, avatar } = user
   return {
     color: 'AQUA',
-    title: `:bust_in_silhouette: ${username}`,
+    title: `:bust_in_silhouette: ${tag}`,
     thumbnail: {
       url: avatar
     },

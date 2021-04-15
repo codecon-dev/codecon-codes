@@ -53,7 +53,7 @@ Import a CSV file containing tokens
 
 ### 🔶 `.user` _(admins only)_
 
-Get information about a user by Discord ID
+Get information about a user by Discord ID or Tag
 
 ## Develop
 

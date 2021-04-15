@@ -126,16 +126,17 @@ export async function createOrUpdateUser (userId, userContent) {
 /**
  * Get a user from DB.
  *
- * @param {string} userId
+ * @param {string} userIdOrTag
  * @returns {Promise<UserModel|null>}
  */
-export async function getUserFromMongo (userId) {
+export async function getUserFromMongo (userIdOrTag) {
   try {
     await connectMongoose()
-    const [user] = await UserModel.find({ userId: userId }).lean()
+    const [user] = await UserModel.find({ $or: [{ userId: userIdOrTag }, { tag: userIdOrTag }] }).lean()
     if (!user) {
       return null
     }
+
     delete user._id
     delete user.__v
     delete user.id

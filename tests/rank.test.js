@@ -19,7 +19,7 @@ jest.mock('../src/utils/user', () => {
 const mockedUsers = [
   {
     userId: '123',
-    username: 'Mark',
+    tag: 'Mark',
     score: 100,
     tokens: [
       {
@@ -31,7 +31,7 @@ const mockedUsers = [
   },
   {
     userId: '010',
-    username: 'Gabriel Nunes',
+    tag: 'Gabriel Nunes',
     score: 250,
     tokens: [
       {

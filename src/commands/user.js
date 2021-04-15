@@ -27,7 +27,7 @@ export async function getUser (message) {
       return message.channel.send('Não encontrei nenhum user com esse id :(')
     }
 
-    const rank = await getUserRankPosition(userId)
+    const rank = await getUserRankPosition(user.userId)
     const userEmbed = mountUserEmbed(user, rank)
     await removeOrUpdateReaction(awaitReaction, true)
     return message.channel.send({ embed: userEmbed })

@@ -50,7 +50,7 @@ describe('handleError functions', () => {
   it('handleReactionError calls console log', () => {
     const spy = jest.spyOn(global.console, 'log').mockImplementation()
     const reaction = { message: mockMessage('') }
-    const user = { username: '' }
+    const user = { tag: '' }
     const error = { toString: jest.fn() }
     handleReactionError(error, reaction, user)
     expect(spy).toHaveBeenCalled()
