@@ -13,7 +13,7 @@ import { Message } from 'discord.js'
 export async function getUser (message) {
   try {
     const { args } = getArgumentsAndOptions(message, '=')
-    const userId = args[0]
+    const userId = args.join(' ')
     if (!userId) {
       const helpEmbed = mountCommandHelpEmbed(message)
       return message.channel.send({ embed: helpEmbed })
