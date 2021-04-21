@@ -79,8 +79,13 @@ describe('Token Get', () => {
             value: 20
           },
           {
-            name: 'Usuários que resgataram',
+            inline: true,
+            name: 'Resgates efetuados',
             value: 1
+          },
+          {
+            name: 'Usuários que resgataram',
+            value: 'gabrielnunes'
           },
           {
             name: 'Expira em',
