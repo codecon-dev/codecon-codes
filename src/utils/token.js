@@ -176,6 +176,7 @@ export function validateNumber (number) {
  */
 export function mountTokenEmbed (token) {
   const { claimedBy, createdAt, expireAt } = token
+  const remainingClaims = typeof token.remainingClaims === 'number' ? token.remainingClaims : token.totalClaims
   const claimedByNumber = (claimedBy || []).length
   const claimedByText = (claimedBy || []).map(user => user.tag).join(', ') || 'Ninguém'
   const createdAtText = createdAt ? new Date(createdAt) : 'Ainda não foi criado'
@@ -207,7 +208,7 @@ export function mountTokenEmbed (token) {
       },
       {
         name: 'Resgates restantes',
-        value: token.remainingClaims || token.totalClaims,
+        value: remainingClaims,
         inline: true
       },
       {
