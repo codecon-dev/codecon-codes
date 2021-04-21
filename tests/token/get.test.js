@@ -80,7 +80,7 @@ describe('Token Get', () => {
           },
           {
             name: 'Usuários que resgataram',
-            value: 'gabrielnunes'
+            value: 1
           },
           {
             name: 'Expira em',
