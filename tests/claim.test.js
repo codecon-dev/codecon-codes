@@ -287,7 +287,7 @@ describe('claimToken', () => {
     const content = '.claim CODECON21'
     const userMessage = mockMessage(content)
     const botMessage = await claimToken(userMessage)
-    expect(botMessage).toEqual('Esse token expirou :(')
+    expect(botMessage).toEqual('Vish, acabaram os resgates disponíveis para esse token :(')
   })
 
   it('sends an expired token message if its date is expired', async () => {

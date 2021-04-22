@@ -95,6 +95,7 @@ export async function askTokenUpdate (message) {
     }
 
     token.totalClaims = totalClaims
+    token.remainingClaims = token.totalClaims - token.claimedBy.length
   }
 
   if (editOption === 'expireAt') {

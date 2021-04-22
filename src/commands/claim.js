@@ -79,7 +79,7 @@ export async function claimToken (message) {
     const { claimedBy, remainingClaims, value, decreaseValue, minimumValue, expireAt } = token
 
     if (!remainingClaims) {
-      return message.channel.send('Esse token expirou :(')
+      return message.channel.send('Vish, acabaram os resgates disponíveis para esse token :(')
     }
 
     const isExpired = expireAt && new Date(Date.now()) > new Date(expireAt)

@@ -1,4 +1,5 @@
 import { createOrUpdateToken, getTokenFromMongo, getTokensFromMongo } from './mongoose'
+import { truncateFieldValue } from './message'
 
 /**
  * @typedef UserClaim
@@ -175,7 +176,9 @@ export function validateNumber (number) {
  */
 export function mountTokenEmbed (token) {
   const { claimedBy, createdAt, expireAt } = token
+  const remainingClaims = typeof token.remainingClaims === 'number' ? token.remainingClaims : token.totalClaims
   const claimedByNumber = (claimedBy || []).length
+  const claimedByText = (claimedBy || []).map(user => user.tag).join(', ') || 'Ninguém'
   const createdAtText = createdAt ? new Date(createdAt) : 'Ainda não foi criado'
   const expirtAtDate = new Date(expireAt)
   const expireAtText = expireAt ? expirtAtDate.toISOString() : 'Não expira'
@@ -205,12 +208,17 @@ export function mountTokenEmbed (token) {
       },
       {
         name: 'Resgates restantes',
-        value: token.remainingClaims || token.totalClaims,
+        value: remainingClaims,
+        inline: true
+      },
+      {
+        name: 'Resgates efetuados',
+        value: claimedByNumber,
         inline: true
       },
       {
         name: 'Usuários que resgataram',
-        value: claimedByNumber
+        value: truncateFieldValue(claimedByText)
       },
       {
         name: 'Expira em',
