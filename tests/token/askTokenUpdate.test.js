@@ -185,12 +185,12 @@ describe('askTokenUpdate', () => {
     expect(token).toEqual('O valor informado não é um número =/')
   })
 
-  it('updates a token totalClaims', async () => {
+  it('updates a token totalClaims when increasing it', async () => {
     getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
     const answers = [
       'CODECON21',
       'totalClaims',
-      '1234',
+      '30',
       'sim'
     ]
     mockUserAnswers(askAndWait, answers)
@@ -199,7 +199,27 @@ describe('askTokenUpdate', () => {
     const token = await askTokenUpdate(userMessage)
     expect(token).toEqual({
       ...mockedToken,
-      totalClaims: 1234
+      totalClaims: 30,
+      remainingClaims: 29
+    })
+  })
+
+  it('updates a token totalClaims when decreasing it', async () => {
+    getDatabaseTokenByCode.mockResolvedValueOnce(mockedToken)
+    const answers = [
+      'CODECON21',
+      'totalClaims',
+      '5',
+      'sim'
+    ]
+    mockUserAnswers(askAndWait, answers)
+
+    const userMessage = mockMessage('')
+    const token = await askTokenUpdate(userMessage)
+    expect(token).toEqual({
+      ...mockedToken,
+      totalClaims: 5,
+      remainingClaims: 4
     })
   })
 
