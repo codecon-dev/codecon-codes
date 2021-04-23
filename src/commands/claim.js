@@ -5,7 +5,7 @@ import { getDatabaseUserById, updateDatabaseUser } from '../utils/user'
 import gifs from '../../data/gifs'
 import Discord from 'discord.js'
 import config from '../config'
-const { watchedTokens } = config
+const { watchedTokens, canClaim } = config
 
 /**
  * @typedef UserScore
@@ -65,6 +65,10 @@ function mountClaimEmbed (code, tag, score) {
  */
 export async function claimToken (message) {
   try {
+    if (!canClaim) {
+      return message.channel.send('Resgates estão desabilitados. Obrigado por participar! :hugging:')
+    }
+
     const { args } = getArgumentsAndOptions(message, '=')
     const code = args[0]
     if (!code) {
