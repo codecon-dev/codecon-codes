@@ -3,6 +3,12 @@ import { mockMessage } from './testUtils'
 import { getDatabaseTokenByCode, updateDatabaseToken } from '../src/utils/token'
 import { getDatabaseUserById, updateDatabaseUser } from '../src/utils/user'
 
+jest.mock('../src/config', () => ({
+  prefix: '.',
+  canClaim: true,
+  watchedTokens: []
+}))
+
 jest.mock('../src/utils/token', () => ({
   getDatabaseTokenByCode: jest.fn(),
   updateDatabaseToken: jest.fn()
