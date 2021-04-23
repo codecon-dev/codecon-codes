@@ -3,5 +3,6 @@ export default {
   guildId: '713502613458649152',
   DMOnlyCommands: ['claim'],
   adminRoles: ['Organização'],
-  adminOnlyCommands: ['token', 'user']
+  adminOnlyCommands: ['token', 'user'],
+  watchedTokens: []
 }

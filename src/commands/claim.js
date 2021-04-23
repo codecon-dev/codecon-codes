@@ -1,8 +1,11 @@
 import { mountCommandHelpEmbed } from './help'
 import { getArgumentsAndOptions, removeOrUpdateReaction } from '../utils/message'
-import { getDatabaseTokenByCode, updateDatabaseToken } from '../utils/token'
+import { getDatabaseTokenByCode, updateDatabaseToken, mountTokenEmbed } from '../utils/token'
 import { getDatabaseUserById, updateDatabaseUser } from '../utils/user'
 import gifs from '../../data/gifs'
+import Discord from 'discord.js'
+import config from '../config'
+const { watchedTokens } = config
 
 /**
  * @typedef UserScore
@@ -144,15 +147,26 @@ export async function claimToken (message) {
       return message.channel.send('Putz, deu ruim ao atualizar o usuário')
     }
 
-    const tokenClaimSuccess = await updateDatabaseToken(updatedToken)
-    if (!tokenClaimSuccess) {
+    const databaseUpdatedToken = await updateDatabaseToken(updatedToken)
+    if (!databaseUpdatedToken) {
       await removeOrUpdateReaction(awaitReaction, false)
       return message.channel.send('Putz, deu ruim ao atualizar o token')
     }
 
     const successClaimEmbed = mountClaimEmbed(code, tag, score)
     await removeOrUpdateReaction(awaitReaction, true)
-    return message.channel.send({ embed: successClaimEmbed })
+    const messageSent = await message.channel.send({ embed: successClaimEmbed })
+
+    const tokensBeingWatched = watchedTokens.filter(token => token.code === code)
+    if (tokensBeingWatched.length) {
+      tokensBeingWatched.forEach(({ message }) => {
+        const newEmbed = mountTokenEmbed(databaseUpdatedToken)
+        const embed = new Discord.MessageEmbed(newEmbed)
+        message.edit(embed)
+      })
+    }
+
+    return messageSent
   } catch (error) {
     console.log(error)
   }
