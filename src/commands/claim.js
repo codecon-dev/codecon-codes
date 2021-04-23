@@ -1,6 +1,6 @@
 import { mountCommandHelpEmbed } from './help'
 import { getArgumentsAndOptions, removeOrUpdateReaction } from '../utils/message'
-import { getDatabaseTokenByCode, updateDatabaseToken, mountTokenEmbed } from '../utils/token'
+import { getDatabaseTokenByCode, updateDatabaseToken, mountTokenEmbed, hasTokenAllowedRole } from '../utils/token'
 import { getDatabaseUserById, updateDatabaseUser } from '../utils/user'
 import gifs from '../../data/gifs'
 import Discord from 'discord.js'
@@ -95,6 +95,11 @@ export async function claimToken (message) {
     const hasAlreadyClaimed = claimedBy.some(claimedUser => claimedUser.id === String(userId))
     if (hasAlreadyClaimed) {
       return message.channel.send('Você já resgatou esse token :eyes:')
+    }
+
+    const hasAllowedRole = await hasTokenAllowedRole(token, message)
+    if (!hasAllowedRole) {
+      return message.channel.send('Esse token é exclusivo para participantes de workshop, malz :s')
     }
 
     const timesClaimed = claimedBy.length

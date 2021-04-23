@@ -1,5 +1,7 @@
 import { createOrUpdateToken, getTokenFromMongo, getTokensFromMongo } from './mongoose'
-import { truncateFieldValue } from './message'
+import { truncateFieldValue, isDMChannel } from './message'
+import { Message } from 'discord.js'
+import config from '../config'
 
 /**
  * @typedef UserClaim
@@ -17,6 +19,7 @@ import { truncateFieldValue } from './message'
  * @property {number} minimumValue
  * @property {number} totalClaims
  * @property {number} remainingClaims
+ * @property {string} allowedRole
  * @property {UserClaim[]} claimedBy
  * @property {string} createdBy ISO Date String.
  * @property {string} createdAt ISO Date String.
@@ -229,4 +232,36 @@ export function mountTokenEmbed (token) {
       text: `Criado em ${createdAtText.toLocaleString()} (GMT-0300) por ${token.createdBy}`
     }
   }
+}
+
+/**
+ * Check if the user has the token allowed role.
+ *
+ * @param { Token } token
+ * @param { Message } message
+ * @returns { Promise<boolean> }
+ */
+export async function hasTokenAllowedRole (token, message) {
+  if (!token.allowedRole) {
+    return true
+  }
+
+  let member = message.member
+
+  const isDirectMessage = isDMChannel(message)
+  if (isDirectMessage) {
+    const userId = message.author.id
+    const guild = message.client.guilds.cache.get(config.guildId)
+    const members = await guild.members.fetch()
+    member = members.get(userId)
+  }
+
+  if (!member) {
+    return false
+  }
+
+  const allowedRole = token.allowedRole
+  const hasRole = member.roles.cache.some(memberRole => memberRole.name === allowedRole)
+  console.log(hasRole)
+  return hasRole
 }
