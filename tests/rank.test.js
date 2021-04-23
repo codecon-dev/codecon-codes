@@ -3,6 +3,13 @@ import { mockMessage } from './testUtils'
 import { getDatabaseUsers } from '../src/utils/user'
 import { handleMessageError } from '../src/utils/handleError'
 
+jest.mock('../src/config', () => ({
+  prefix: '.',
+  rank: {
+    enabled: true
+  }
+}))
+
 jest.mock('../src/utils/handleError', () => ({
   handleMessageError: jest.fn()
 }))

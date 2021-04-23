@@ -2,6 +2,7 @@ import { getDatabaseUsers, User } from '../utils/user'
 import { handleMessageError } from '../utils/handleError'
 import { removeOrUpdateReaction, convertToCodeBlock } from '../utils/message'
 import { Message } from 'discord.js'
+import config from '../config'
 
 /**
  * Mount the rank embed.
@@ -33,6 +34,10 @@ function mountRankEmbed (users) {
  */
 export async function getRank (message) {
   try {
+    if (!config.rank.enabled) {
+      return message.channel.send(config.rank.message)
+    }
+
     const awaitReaction = await message.react('⏳')
     const users = await getDatabaseUsers()
     users.sort((a, b) => b.score - a.score)
