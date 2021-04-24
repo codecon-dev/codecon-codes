@@ -6,7 +6,7 @@ export default {
   adminOnlyCommands: ['token', 'user'],
   watchedTokens: [],
   rank: {
-    enabled: false,
+    enabled: true,
     message: 'O ranking final será divulgado na live, assiste lá: https://www.twitch.tv/pachicodes :eyes:'
   },
   canClaim: false
