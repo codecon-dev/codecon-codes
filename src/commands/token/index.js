@@ -3,6 +3,7 @@ import { getToken } from './get'
 import { listTokens } from './list'
 import { updateToken } from './update'
 import { importToken } from './import'
+import { getStats } from './stats'
 import { mountCommandHelpEmbed } from '../help'
 import { getArgumentsAndOptions } from '../../utils/message'
 import { Message } from 'discord.js'
@@ -12,7 +13,8 @@ const tokenActions = {
   get: getToken,
   list: listTokens,
   update: updateToken,
-  import: importToken
+  import: importToken,
+  stats: getStats
 }
 
 /**

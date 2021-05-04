@@ -230,3 +230,45 @@ export function mountTokenEmbed (token) {
     }
   }
 }
+
+/**
+ * TokenStats.
+ *
+ * @property {number} tokens
+ * @property {number} totalClaims
+ * @property {number} maxValue
+ * @property {number} minValue
+ * @property {number} averageValue
+ */
+
+/**
+ * Retrieve token stats.
+ *
+ * @param { Token[] } tokens
+ * @returns { TokenStats }
+ */
+export function getTokenStats (tokens) {
+  const numberOfTokens = tokens.length
+  const stats = tokens.reduce((stats, token) => {
+    stats.totalClaims = stats.totalClaims + token.claimedBy.length
+    stats.averageValue = stats.averageValue + (token.value / numberOfTokens)
+    if (token.value > stats.maxValue) {
+      stats.maxValue = token.value
+    }
+    if (token.value < stats.minValue) {
+      stats.minValue = token.value
+    }
+
+    return stats
+  }, {
+    totalClaims: 0,
+    maxValue: 0,
+    minValue: Infinity,
+    averageValue: 0
+  })
+
+  return {
+    tokens: numberOfTokens,
+    ...stats
+  }
+}
