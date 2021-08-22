@@ -66,7 +66,7 @@ function mountClaimEmbed (code, tag, score) {
 export async function claimToken (message) {
   try {
     if (!canClaim) {
-      return message.channel.send('Resgates estão desabilitados. Obrigado por participar! :hugging:')
+      return message.channel.send('Os resgates agora são feitos pelo site! Faça o login e participe: https://codecon.dev/ ')
     }
 
     const { args } = getArgumentsAndOptions(message, '=')
