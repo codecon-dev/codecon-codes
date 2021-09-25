@@ -6,8 +6,8 @@ export default {
   adminOnlyCommands: ['token', 'user'],
   watchedTokens: [],
   rank: {
-    enabled: true,
-    message: 'O ranking final será divulgado na live, assiste lá: https://www.twitch.tv/pachicodes :eyes:'
+    enabled: false,
+    message: 'O rank está disponível no site da Codecon! https://codecon.dev/game/code-codes'
   },
   canClaim: false
 }
