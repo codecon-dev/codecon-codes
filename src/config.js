@@ -6,7 +6,7 @@ export default {
   adminOnlyCommands: ['token', 'user'],
   watchedTokens: [],
   rank: {
-    enabled: false,
+    enabled: true,
     message: 'O rank está disponível no site da Codecon! https://codecon.dev/game/code-codes'
   },
   canClaim: false
