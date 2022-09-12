@@ -1,5 +1,5 @@
 import { askAndWait } from '../../utils/message'
-import { Message, MessageAttachment } from 'discord.js'
+import { Message } from 'discord.js'
 
 /**
  * Get csv file url with tokens to import.
@@ -8,10 +8,7 @@ import { Message, MessageAttachment } from 'discord.js'
  * @returns {string} Attachment url.
  */
 export async function askTokenImport (message) {
-  const imageAttachment = new MessageAttachment(process.env.CSV_EXAMPLE_URL)
-  message.channel.send(imageAttachment)
-
-  const askTokenCodeText = 'Fala, meu bom. Manda aí o arquivo .CSV no formato como no exemplo'
+  const askTokenCodeText = 'Fala, meu bom. Manda aí o arquivo .CSV'
   const { attachments } = await askAndWait(askTokenCodeText, message)
 
   if (!attachments || !attachments.size) {
