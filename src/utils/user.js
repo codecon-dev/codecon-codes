@@ -87,6 +87,9 @@ export async function getUserRankPosition (userId) {
  */
 export function mountUserEmbed (user, rank) {
   const { tag, userId, score, tokens } = user
+  tokens.sort((a, b) => {
+    return b.value - a.value
+  })
   const claimedTokensText = tokens.map(token => token.code).join(', ') || 'Nenhum'
   return {
     color: 'AQUA',
