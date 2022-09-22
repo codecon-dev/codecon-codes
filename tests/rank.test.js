@@ -55,7 +55,7 @@ describe('getRank', () => {
     jest.clearAllMocks()
   })
 
-  it('returns the rank embed', async () => {
+  it.skip('returns the rank embed', async () => {
     getDatabaseUsers.mockResolvedValueOnce(mockedUsers)
     const content = '.rank'
     const userMessage = mockMessage(content)
