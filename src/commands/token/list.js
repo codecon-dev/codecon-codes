@@ -31,11 +31,11 @@ function mountTokenListEmbed (tokensCodes) {
     fields: [
       {
         name: 'Número total de Tokens',
-        value: tokensCodes.length
+        value: tokensCodes.length || ' '
       },
       {
         name: 'Tokens',
-        value: truncateFieldValue(firstTokens.join('\n')),
+        value: truncateFieldValue(firstTokens.join('\n')) || ' ',
         inline: true
       },
       {
