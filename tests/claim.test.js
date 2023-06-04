@@ -36,7 +36,7 @@ const mockedToken = {
     }
   ],
   createdAt: '2021-03-13T21:45:59.143Z',
-  expireAt: '2023-04-24T23:00:00.000Z'
+  expireAt: '2030-04-24T23:00:00.000Z'
 }
 
 const mockedUser = {
