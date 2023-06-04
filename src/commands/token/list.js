@@ -35,12 +35,12 @@ function mountTokenListEmbed (tokensCodes) {
       },
       {
         name: 'Tokens',
-        value: truncateFieldValue(firstTokens.join('\n')) || ' ',
+        value: truncateFieldValue(firstTokens.join('\n')) || '.',
         inline: true
       },
       {
         name: '\u200B',
-        value: truncateFieldValue(secondTokens.join('\n')),
+        value: truncateFieldValue(secondTokens.join('\n')) || '.',
         inline: true
       }
     ]
