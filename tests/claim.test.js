@@ -11,7 +11,8 @@ jest.mock('../src/config', () => ({
 
 jest.mock('../src/utils/token', () => ({
   getDatabaseTokenByCode: jest.fn(),
-  updateDatabaseToken: jest.fn()
+  updateDatabaseToken: jest.fn(),
+  hasTokenAllowedRole: jest.fn().mockResolvedValue(true)
 }))
 
 jest.mock('../src/utils/user', () => ({
